@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
+ <script src="{% static 'assets/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
+<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
+     <script src="http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+     <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+{#    <script src="http://issues.wenzhixin.net.cn/bootstrap-table/ga.js"></script>#}
+    <script>
+         function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    }
+});
+        function operateFormatter(value, row, index) {
+        return [
+            '<a class="remove" href="javascript:void(0)" style="margin-left:30px" title="Go away">',
+            '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+        $(function () {
+
+            operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            console.log(row.id);
+            console.log(row.itemid);
+            $.ajax({
+                url:'remove_liked/',
+                data:{
+                    id: row.id,
+                    itemid: row.itemid,
+                },
+                type:'post',
+            });
+
+{#            alert('Do you really want: ' + row.itemid + "?");#}
+{#            $('#tab').bootstrapTable('refresh');#}
+{#            window.location.reload();#}
+
+
+
+            $('#tab').bootstrapTable('remove', {
+                field: 'itemid',
+                values: [row.itemid],
+            });
+        }
+    };
+          $('#tab').bootstrapTable({
+              url:'product_liked',
+              toggle:'table',
+              pagination:'true',
+              search:'true',
+              showRefresh:'true',
+              showColumns:'true',
+              showExport:'true',
+              toolbar:'toolbar',
+              clickToSelect:'true',
+              pageList: [10, 25, 50, 100, 500, 1000],
+             columns:[{
+                 field:'state',
+                 checkbox:'true',
+             },{
+                 field:'galleryurl',
+                 title:'图片',
+             },{
+                 field:'itemid',
+                 title:'商品编号',
+                 visible:false,
+             },{
+                 field:'title',
+                 title:"标题",
+                 sortable:'true',
+
+             },{
+                 field:'mysku',
+                 title:'SKU',
+                 editable:true,
+             },{
+                 field:'curdate',
+                 title:'创建日期',
+                 sortable:'true',
+             },{
+                 field:'operate',
+                 title:'操作',
+                 events: operateEvents,
+                 formatter:operateFormatter,
+             }]
+          });
+        });
+    </script>
+<table id="tab"></table>
+{% endblock %}

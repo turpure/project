@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+        <script src="//cdn.bootcss.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"></script>
+        <script>
+            $(function () {
+                $("#id_user").attr({placeholder:"Enter a Username", size:"40"});
+                $("#id_password1").attr({placeholder:"Enter your Password", size:"40"});
+                $("#id_password2").attr({placeholder:"Confirm your Password", size:"40"});
+            })
+        </script>
+		<title>Admin</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row main">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">欢迎注册</h1>
+	               		<hr />
+	               	</div>
+	            </div>
+				<div class="main-login main-center">
+					<form class="form-horizontal" method="post" action="#">
+                        {% csrf_token %}
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">用户名</label>
+
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                    {{ uf.user }}
+{#									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username"/>#}
+{#								</div>#}
+{#							</div>#}
+						</div>
+
+						<div class="form-group">
+							<label for="password" class="cols-sm-2 control-label">密码</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    {{ uf.password1 }}
+{#									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>#}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="confirm" class="cols-sm-2 control-label">确认密码</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    {{ uf.password2 }}
+{#									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>#}
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group ">
+							<input type="submit" value="注册" class="btn btn-primary">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+	</body>
+</html>

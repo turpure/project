@@ -1,0 +1,384 @@
+{%  extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
+    <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+    <script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
+    <script>
+        function proOperateFormatter(value, row, index) {
+            return [
+                    '<a class="like" href="javascript:void(0)" style="margin-left:10px" title="认领">',
+                    '认领产品|',
+                    '</a>',
+                    '<a class="remove" href="javascript:void(0)" style="margin-left:10px" title="删除">',
+                    '删除产品|',
+                    '</a>',
+                    '<a class="watch" href="javascript:void(0)" style="margin-left:10px" title="关注">',
+                    '关注店铺',
+                    '</a>',
+
+            ].join('');
+        };
+        proOperateEvents = {
+            'click .remove' : function (e, row, value, index) {
+                console.log(index);
+                $.ajax({
+                    url:"delete_kw_product",
+                    data:{
+                        id: value.id,
+                    },
+                    type:'post',
+                    datatype:'text'
+                });
+                $("[name='refresh']").click();
+            },
+            'click .like' : function (e, row, value, index) {
+                console.log(index);
+                $.ajax({
+                    url:"like_kw_product",
+                    data:{
+                        id: value.id,
+                    },
+                    type:'post',
+                    datatype:'text'
+                });
+                setTimeout(function(){$("[name='refresh']").click()}, 100);
+            },
+            'click .watch' : function (e, row, value, index) {
+                console.log(index);
+                $.ajax({
+                    url:"watch_kw_shop",
+                    data:{
+                        id: value.id,
+                    },
+                    type:'post',
+                    datatype:'text'
+                });
+                setTimeout(function(){$("[name='refresh']").click()}, 100);
+            },
+        };
+        function operateFormatter(value, row, index) {
+            return [
+                    '<a class="add" href="javascript:void(0)" style="margin-left:30px" title="add">',
+                    '增加关键字|',
+                    '</a>',
+                    '<a class="edit" href="javascript:void(0)" style="margin-left:30px" title="edit">',
+                    '修改关键字|',
+                    '</a>',
+                    '<a class="delete" href="javascript:void(0)" style="margin-left:30px" title="delete">',
+                    '删除关键字|',
+                    '</a>',
+                    '<a class="sync" href="javascript:void(0)" style="margin-left:30px" title="sync">',
+                    '同步产品|',
+                    '</a>',
+                    '<a class="view" href="javascript:void(0)" style="margin-left:30px" title="view">',
+                    '查看产品',
+                    '</a>',
+            ].join('');
+        };
+        operateEvents = {
+            'click .sync': function(e,value,row, index) {
+                console.log(value, row, index);
+                console.log(row.id,row.keywords);
+                $.ajax({
+                    url:'sync_keywords',
+                    data:{
+                        keywords:row.keywords,
+                        id:row.id,
+                    },
+                    type:'post',
+                    dataType:'text',
+
+                });
+{#                $('#tab').bootstrapTable('destroy');#}
+                setTimeout(function(){$("[name='refresh']").click()}, 100);
+                alert("已经加入待更新队里，请稍后查看！");
+
+        },
+            'click .add':function(e,value,row,index) {
+                console.log(value, row, index);
+                $('#keywords').val('');
+                $('#myModal').modal();
+                
+
+            },
+            'click .edit':function(e,value,row,index) {
+                $('#editModal').modal();
+                console.log(value, row, index);
+{#                var shopname = $("[data-index='"+index+"']").children().eq(2).text();#}
+{#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
+{#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
+                var keywords = row.keywords;
+                var uid = row.id;
+                $('#uid').val(uid);
+                $("#edit_keywords").val(keywords);
+
+                console.log(keywords,uid);
+            },
+            'click .delete': function (e,value, row,index) {
+                console.log(value, row, index);
+                var id =row.id;
+                $.ajax({
+                    url:'delete_keywords',
+                    data:{
+                        id:id,
+                    },
+                    type:'post',
+                    dataType:'text',
+
+                });
+               setTimeout(function(){$("[name='refresh']").click()}, 100);
+            },
+            'click .view':function(e,value,row,index) {
+                console.log(value, row, index);
+                $('#tab').bootstrapTable('destroy');
+                $("#update").attr("class","btn btn-default btn-primary");
+{#                $('#protab').bootstrapTable();#}
+                var kw = row.keywords;
+                $('#protab').bootstrapTable({
+                  url:'show_kw_product',
+                    queryParams: function (p) {
+                        return {
+                            kw: kw,
+                            }
+                            },
+                  toggle:'table',
+                    height:800,
+                  pagination:'true',
+                  search:'true',
+                  showRefresh:'true',
+                  showColumns:'true',
+                  showExport:'true',
+                  toolbar:'toolbar',
+                  clickToSelect:'true',
+                  pageList: [10, 25, 50, 100, 500, 1000],
+                  columns:[{
+                     field:'state',
+                     checkbox:'true',
+                 },{
+                     field:'galleryurl',
+                     title:'图片',
+                 },{
+                     field:'title',
+                     title:"标题",
+                     sortable:'true',
+
+                 },{
+                     field:'location',
+                     title:'发货地址',
+                     sortable:'true',
+                 },{
+                     field:'starttime',
+                     title:'上架时间',
+                     sortable:'true',
+                 },{
+                     field:'quantitysold',
+                     title:'售出',
+                     sortable:'true',
+
+                 },{
+                     field:'deltasold',
+                     title:'最近售出',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'deltahit',
+                     title:'流量变化',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'deltadays',
+                     title:'N天内',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'currentprice',
+                     title:'售价',
+                     sortable:'true',
+                 },{
+                     field:'currency',
+                     title:'货币',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'kw',
+                     title:'关键字',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'curdate',
+                     title:'创建日期',
+                     sortable:'true',
+                     visible:false,
+                 },{
+                     field:'pstatus',
+                     title:'标记状态',
+                     sortable:true,
+                     visible:false,
+
+                 },{
+                     field:'operate',
+                     title:'操作',
+                     events: proOperateEvents,
+                     formatter:proOperateFormatter,
+                 },{
+                     field:'itemid',
+                     title:'itmeid',
+                     visible:false,
+                 },{
+                     field:'owner',
+                     title:'归属人',
+                     visible:false,
+                 }]
+          });
+            },
+        };
+        $(function () {
+
+            $("#btn_submit").click(function () {
+                var kw =$("#keywords").val();
+
+                $.ajax({
+                    url:'add_keywords',
+                    data:{
+                        keywords: kw,
+
+                    },
+                    type:'post',
+                    dataType:'text',
+
+                });
+               setTimeout(function(){$("[name='refresh']").click()}, 100);
+
+            });
+            $("#edit_submit").click(function () {
+                var kw =$("#edit_keywords").val();
+                console.log(kw);
+                var id= $("#uid").val();
+                console.log(id);
+                $.ajax({
+                    url:'edit_keywords',
+                    data:{
+                        kw: kw,
+                        id: id,
+                    },
+                    type:'post',
+                    dataType:'text',
+
+                });
+               setTimeout(function(){$("[name='refresh']").click()}, 100);
+
+            });
+
+            $("#tab").bootstrapTable({
+                url:'get_keywords',
+                toggle:'table',
+                pagination:'true',
+                search:'true',
+                showRefresh:'true',
+                showColumns:'true',
+                showExport:'true',
+                toolbar:'toolbar',
+                clickToSelect:'true',
+                pageList: [10, 25, 50, 100, 500, 1000],
+                columns:[{
+                    field: 'state',
+                    checkbox: 'true',
+                    title: '编号'
+                },{
+                    field:'id',
+                    visible:false
+                },{
+                    field:'userid',
+                    title: '创建人'
+                },{
+                    field:'keywords',
+                    title:'关键字',
+                    editable:true,
+                    formatter:'kwFormatter',
+
+                },{
+                    field:"curdate",
+                    title:'创建日期',
+                    sortable:'true'
+                },{
+                    field:"updatetime",
+                    title:'同步日期',
+                    sortable:'true'
+                },{
+                 field:'operate',
+                 title:'操作',
+                 events: operateEvents,
+                 formatter:operateFormatter,
+             },]
+            });
+
+        })
+    </script>
+    <script>
+    function kwFormatter(value) {
+        var head_url = "http://www.ebay.com/sch/i.html?sacat=0&_dmd=1&_nkw=";
+        var tail_url = "&rt=nc&LH_BIN=1";
+        var kw = value.replace(' ', '+');
+        var url = head_url + kw + tail_url;
+        var anchor = "<a target='_blank' href='" + url+ "'>" + value +"</a>";
+        return anchor;
+    }
+    </script>
+    <table id="tab" ></table>
+<table id="protab" ></table>
+
+</div>
+</div>
+    </div>
+
+  </div>
+
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+          <div class="form-group">
+
+            <label for="txt_departmentname">关键字</label>
+            <input type="text" name="txt_kw" class="form-control" id="keywords" placeholder="关键字">
+          </div>
+            </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+          <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+        </div>
+      </div>
+    </div>
+        </div>
+    </div>
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+          <div class="form-group">
+
+            <label for="txt_departmentname">关键字</label>
+            <input type="text" name="edit_keywords" class="form-control" id="edit_keywords" placeholder="关键字">
+          </div>
+                <div><input type="hidden" name="edit_uid" class="form-control" id="uid" placeholder=""></div>
+            </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+          <button type="button" id="edit_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+        </div>
+      </div>
+    </div>
+        </div>
+    </div>
+
+{% endblock %}
