@@ -11,7 +11,7 @@ def find_advanced(page, key_words):
     item_list = list()
     api = Connection(
         # domain='api.ebay.com',
-        timeout=3,
+        timeout=6,
         appid='ZhouPeng-3242-4cc7-88fd-310f513fcd71',
         devid='df3f2898-65b1-4e15-afd5-172b989903aa',
         certid='a0e19cf9-9b2b-457f-b6f1-87f3f600ca63',
@@ -60,7 +60,7 @@ def datetime2date(time):
 
 
 def get_category_list(keywords):
-    p = Pool(8)
+    p = Pool(4)
     test_set = p.map(partial(find_advanced, key_words=keywords), range(1, 50))
     sum_list = []
     if test_set:

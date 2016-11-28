@@ -31,7 +31,7 @@ def insert_data(detail, uid):
         ')',
     ])
     try:
-        con = MySQLdb.connect(host='192.168.0.134', user='root', passwd='', db='django_user')
+        con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
         cur = con.cursor(MySQLdb.cursors.DictCursor)
         cur.execute(check, (detail['itemid'],))
         result = cur.fetchone()
@@ -78,7 +78,7 @@ def insert_kw_data(detail, uid, keywords):
         ')',
     ])
     try:
-        con = MySQLdb.connect(host='192.168.0.134', user='root', passwd='', db='django_user')
+        con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
         cur = con.cursor(MySQLdb.cursors.DictCursor)
         cur.execute(check, (detail['itemid'],))
         result = cur.fetchone()
