@@ -2,14 +2,14 @@
 {% load static %}
 {% block content %}
     <link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-{#    <link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>#}
-{#<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>#}
+<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
+ 
     <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
-    <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
-{#    <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>#}
-    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-    <script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
+    <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
+<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
 
 
 <script>
@@ -199,16 +199,18 @@ function shopFormatter(value) {
                 $('#protab').bootstrapTable({
               url:'show_product'+'/?name='+ row.shopname,
               toggle:'table',
-                    height:800,
-                    showMultiSort:'true',
+                height:800,
+                showMultiSort:'true',
               pagination:'true',
               search:'true',
               showRefresh:'true',
+              showMultiSort:true,
               showColumns:'true',
               showExport:'true',
               toolbar:'toolbar',
               clickToSelect:'true',
               pageList: [10, 25, 50, 100, 500, 1000],
+              sortPriority: [{"sortName": "starttime", "sortOrder":"desc"},{"sortName": "quantitysold", "sortOrder":"desc"}],
              columns:[{
                  field:'state',
                  checkbox:'true',
