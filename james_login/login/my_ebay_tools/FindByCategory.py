@@ -68,6 +68,8 @@ def get_category_list(keywords):
             if item:
                 sum_list = sum_list + item
             # print sum_list
+    p.close()
+    p.join()
     return list(set(sum_list))
 
 

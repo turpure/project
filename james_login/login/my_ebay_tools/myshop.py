@@ -138,13 +138,18 @@ def handle_kw(id, uid, keywords):
 def update_shop_products(shopname, uid):
     p = Pool(4)
     p.map(partial(handle, uid=uid),  get_item_list(shopname))
+    p.close()
+    p.join()
+
 
 
 def update_keywords_product(keywords, uid):
     p = Pool(4)
     item_list = get_category_list(keywords)
-    print item_list
+    # print item_list
     p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
+    p.close()
+    p.join()
 
 
 if __name__ =="__main__":
