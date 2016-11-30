@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^home/login', login_views.login, name='login'),
     url(r'^home/dashboard', login_views.dashboard, name='dashboard'),
     url(r'^home/shops', login_views.shops, name='shops'),
+    url(r'^home/remove_all_shops', login_views.remove_all_shops, name='remove_all_shops'),
     url(r'^home/get_shops', login_views.get_shops, name='get_shops'),
     url(r'^home/add_shops', login_views.add_shops, name='add_shops'),
     url(r'^home/edit_shops', login_views.edit_shops, name='edit_shops'),

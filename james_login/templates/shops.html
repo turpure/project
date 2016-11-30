@@ -21,16 +21,51 @@ function shopFormatter(value) {
 
 }
 </script>
+<script type="text/javascript">
+    function getSlectionids(){
+        var $table = $('#tab');
+        var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+                return row.id;
+            });
+        return ids
+    };
+</script>
+<script type="text/javascript">
+    $(function(){
+        var $table = $('#tab');
+        $("#removeall").click(function(){
+       var ids = getSlectionids();
+       $.ajax({
+        url: 'remove_all_shops',
+        data:{
+            ids: JSON.stringify({'ids': ids})
+        },
+        type: "post"
+       });
+        $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+    });   
+    });
+</script>
 <div class="container">
 <div id="toolbar">
-        <button id="remove" class="btn btn-danger radius" disabled>
-            <i class="glyphicon glyphicon-remove"></i> Delete
+        <button id="removeall" class="btn btn-danger radius" >
+            <i class="glyphicon glyphicon-trash"></i> 批量删除
         </button>
+        <button id="addall" class="btn btn-success radius" >
+            <i class="glyphicon glyphicon-plus"></i> 批量增加
+        </button>
+        <button id="syncall" class="btn btn-primary radius" >
+            <i class="glyphicon glyphicon-transfer"></i> 批量同步
+        </button>
+	
 </div>
 <table id="tab" ></table>
 </div>
 </div>
-    </div>
+    </div>d
 
   </div>
 

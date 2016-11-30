@@ -73,6 +73,21 @@ def shops(request):
     return render(request, "shops.html")
 
 
+def  remove_all_shops(request):
+    if request.method == "POST":
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                Shops.objects.filter(id=id).delete()
+            return JsonResponse({"msg":"it works!"})
+        else:
+            return JsonResponse({"msg":'it fails!'})
+
+
+
 def get_shops(request):
     userid = request.COOKIES.get('username', '')
     if userid:
