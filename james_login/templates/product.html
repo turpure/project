@@ -1,6 +1,10 @@
-{%  extends 'base.html' %} -->
 {% load static %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple Sort</title>
+    <meta charset="utf-8">
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
@@ -174,17 +178,11 @@
 
         })
     </script>
-    
-<table id="protab" ></table>
-
-</div>
-</div>
+</head>
+<body>
+    <div class="container">
+        <h1>店铺产品</h1>
+        <table id="protab" ></table>
     </div>
-
-  </div>
-
-</div>
-
-
-
-{% endblock %}
+</body>
+</html>
