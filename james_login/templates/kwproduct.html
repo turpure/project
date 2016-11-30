@@ -1,11 +1,11 @@
-{%  extends 'base.html' %} -->
+{%  extends 'base.html' %}
 {% load static %}
 {% block content %}
     <link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
-
+ 
     <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
     <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -29,7 +29,7 @@
             'click .remove' : function (e, row, value, index) {
                 console.log(index);
                 $.ajax({
-                    url:"../delete_product",
+                    url:"../delete_kw_product",
                     data:{
                         id: value.id,
                     },
@@ -41,7 +41,7 @@
             'click .like' : function (e, row, value, index) {
                 console.log(index);
                 $.ajax({
-                    url:"../like_product",
+                    url:"../like_kw_product",
                     data:{
                         id: value.id,
                     },
@@ -53,7 +53,7 @@
             'click .watch' : function (e, row, value, index) {
                 console.log(index);
                 $.ajax({
-                    url:"../watch_shop",
+                    url:"../watch_kw_shop",
                     data:{
                         id: value.id,
                     },
@@ -75,10 +75,10 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
         $(function () {
-            var shop_url = document.URL;
-            var shop_name = getParameterByName('shopname', shop_url)
+            var kw_url = document.URL;
+            var kw = getParameterByName('kw', kw_url)
             $('#protab').bootstrapTable({
-                    url:'../show_product?name=' + shop_name,
+                    url:'../show_kw_product?kw=' + kw,
                     
                   toggle:'table',
                     height:800,

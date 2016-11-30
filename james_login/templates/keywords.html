@@ -11,58 +11,8 @@
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
     <script>
-        function proOperateFormatter(value, row, index) {
-            return [
-                    '<a class="like" href="javascript:void(0)" style="margin-left:10px" title="认领">',
-                    '认领产品|',
-                    '</a>',
-                    '<a class="remove" href="javascript:void(0)" style="margin-left:10px" title="删除">',
-                    '删除产品|',
-                    '</a>',
-                    '<a class="watch" href="javascript:void(0)" style="margin-left:10px" title="关注">',
-                    '关注店铺',
-                    '</a>',
-
-            ].join('');
-        };
-        proOperateEvents = {
-            'click .remove' : function (e, row, value, index) {
-                console.log(index);
-                $.ajax({
-                    url:"delete_kw_product",
-                    data:{
-                        id: value.id,
-                    },
-                    type:'post',
-                    datatype:'text'
-                });
-                $("[name='refresh']").click();
-            },
-            'click .like' : function (e, row, value, index) {
-                console.log(index);
-                $.ajax({
-                    url:"like_kw_product",
-                    data:{
-                        id: value.id,
-                    },
-                    type:'post',
-                    datatype:'text'
-                });
-                setTimeout(function(){$("[name='refresh']").click()}, 100);
-            },
-            'click .watch' : function (e, row, value, index) {
-                console.log(index);
-                $.ajax({
-                    url:"watch_kw_shop",
-                    data:{
-                        id: value.id,
-                    },
-                    type:'post',
-                    datatype:'text'
-                });
-                setTimeout(function(){$("[name='refresh']").click()}, 100);
-            },
-        };
+        
+        
         function operateFormatter(value, row, index) {
             return [
                     '<a class="add" href="javascript:void(0)" style="margin-left:30px" title="add">',
@@ -77,7 +27,7 @@
                     '<a class="sync" href="javascript:void(0)" style="margin-left:30px" title="sync">',
                     '同步产品|',
                     '</a>',
-                    '<a class="view" href="javascript:void(0)" style="margin-left:30px" title="view">',
+                    '<a class="view"  target="_blank" href="kwproduct/?kw=' + row.keywords + '" style="margin-left:30px" title="view">',
                     '查看产品',
                     '</a>',
             ].join('');
@@ -135,111 +85,7 @@
                 });
                setTimeout(function(){$("[name='refresh']").click()}, 100);
             },
-            'click .view':function(e,value,row,index) {
-                console.log(value, row, index);
-                $('#tab').bootstrapTable('destroy');
-                $("#update").attr("class","btn btn-default btn-primary");
-{#                $('#protab').bootstrapTable();#}
-                var kw = row.keywords;
-                $('#protab').bootstrapTable({
-                  url:'show_kw_product',
-                    queryParams: function (p) {
-                        return {
-                            kw: kw,
-                            }
-                            },
-                  toggle:'table',
-                    height:800,
-                  pagination:'true',
-                  showMultiSort:'true',
-                  search:'true',
-                  showRefresh:'true',
-                  showColumns:'true',
-                  showExport:'true',
-                  toolbar:'toolbar',
-                  clickToSelect:'true',
-                  pageList: [10, 25, 50, 100, 500, 1000],
-                  sortPriority: [{"sortName": "starttime", "sortOrder":"desc"},{"sortName": "quantitysold", "sortOrder":"desc"}],
-                  columns:[{
-                     field:'state',
-                     checkbox:'true',
-                 },{
-                     field:'galleryurl',
-                     title:'图片',
-                 },{
-                     field:'title',
-                     title:"标题",
-                     sortable:'true',
 
-                 },{
-                     field:'location',
-                     title:'发货地址',
-                     sortable:'true',
-                 },{
-                     field:'starttime',
-                     title:'上架时间',
-                     sortable:'true',
-                 },{
-                     field:'quantitysold',
-                     title:'售出',
-                     sortable:'true',
-
-                 },{
-                     field:'deltasold',
-                     title:'最近售出',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'deltahit',
-                     title:'流量变化',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'deltadays',
-                     title:'N天内',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'currentprice',
-                     title:'售价',
-                     sortable:'true',
-                 },{
-                     field:'currency',
-                     title:'货币',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'kw',
-                     title:'关键字',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'curdate',
-                     title:'创建日期',
-                     sortable:'true',
-                     visible:false,
-                 },{
-                     field:'pstatus',
-                     title:'标记状态',
-                     sortable:true,
-                     visible:false,
-
-                 },{
-                     field:'operate',
-                     title:'操作',
-                     events: proOperateEvents,
-                     formatter:proOperateFormatter,
-                 },{
-                     field:'itemid',
-                     title:'itmeid',
-                     visible:false,
-                 },{
-                     field:'owner',
-                     title:'归属人',
-                     visible:false,
-                 }]
-          });
-            },
         };
         $(function () {
 

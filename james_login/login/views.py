@@ -141,6 +141,12 @@ def product(request):
         return render(request, 'product.html')
 
 
+def kwproduct(request):
+    userid = request.COOKIES.get('username', '')
+    if userid:
+        return render(request, 'kwproduct.html')
+
+
 def keywords(request):
     userid = request.COOKIES.get('username', '')
     return render(request, 'keywords.html')
