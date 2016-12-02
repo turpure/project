@@ -88,6 +88,26 @@ def  remove_all_shops(request):
 
 
 
+def addall(request):
+    if request.method == 'POST':
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            data2upload = request.POST.get('data')
+            data_json = json.loads(data2upload)
+            data = data_json['data']
+            curdate = str(datetime.datetime.now())
+            if data:
+                for row in data:
+                    shopname = row['shopname']
+                    feedbackscore = row['feedbackscore']                   
+                    Shops.objects.create(shopname=shopname, userid=userid, curdate=curdate, feedbackscore=feedbackscore)
+                return JsonResponse({'msg':'it works!', 'code':0})
+            else:
+                return JsonResponse({"msg":"no content", 'code': 2})
+
+    else:
+        return JsonResponse({'msg':'noi loggin!', 'code':1})
+
 def get_shops(request):
     userid = request.COOKIES.get('username', '')
     if userid:
