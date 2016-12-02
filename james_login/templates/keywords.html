@@ -10,6 +10,7 @@
     <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
+<script src="//cdn.bootcss.com/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
     <script>
         
         
@@ -179,8 +180,98 @@
         return anchor;
     }
     </script>
+    <script type="text/javascript">
+    function getSlectionids(){
+        var $table = $('#tab');
+        var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+                return row.id;
+            });
+        return ids
+    };
+</script>
+    <script type="text/javascript">
+    function uploadFile(){
+
+        var $fileupload = document.getElementById('fileupload');
+        $fileupload.addEventListener('change',function(){
+            if(!$fileupload.value){
+                console.log("no file chosed");
+            }
+           var file = $fileupload.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var csvdata = e.target.result;
+                // console.log(csvdata);
+                var data = $.csv.toObjects(csvdata);
+                // console.log(data);
+                $.ajax({
+                    url: 'addallkw',
+                    type: 'post',
+                    data: {
+                        data:JSON.stringify({'data': data})
+                },
+                success: function(result){
+                    if (result.code){
+                        alert('上传出错，请检查上传文件！');
+                    }
+                    else {
+                        $("[name='refresh']").click();
+                    }
+                }
+
+                });
+            };
+         reader.readAsText(file);
+        });
+    };
+</script>
+    <script type="text/javascript">
+    $(function(){
+        var $table = $('#tab');
+        $("#removeall").click(function(){
+       var ids = getSlectionids();
+       $.ajax({
+        url: 'remove_all_kw',
+        data:{
+            ids: JSON.stringify({'ids': ids})
+        },
+        type: "post"
+       });
+        $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+    }); 
+
+    $("#addall").click(function(){
+        // alert('it!');
+        $("#fileupload").click();
+        uploadFile();
+    }); 
+    });
+</script>
+    <div class="container">
+    <div id="toolbar">
+        <button id="removeall" class="btn btn-danger radius" >
+            <i class="glyphicon glyphicon-trash"></i> 批量删除
+        </button>
+        <button id="addall" class="btn btn-success radius" >
+            <i class="glyphicon glyphicon-plus"></i> 批量增加          
+        </button>
+        <form method="post" action="http://localhost/test" enctype="multipart/form-data" style="display:none">
+        <input id="fileupload" type="file"  accept=".csv">
+        </form>
+
+ 
+        <button id="syncall" class="btn btn-primary radius"  style="display:none">
+            <i class="glyphicon glyphicon-transfer"></i> 批量同步
+        </button>
+    
+</div>
     <table id="tab" ></table>
-<table id="protab" ></table>
+    </div>
+    
+
 
 </div>
 </div>

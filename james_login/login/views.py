@@ -300,6 +300,37 @@ def add_keywords(request):
         KeyWords.objects.create(keywords='fefefef', userid=uid, curdate=curdate)
         return JsonResponse({"msg": "testing!"})
 
+def addallkw(request):
+    if request.method == 'POST':
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            data2upload = request.POST.get('data')
+            data_json = json.loads(data2upload)
+            data = data_json['data']
+            curdate = str(datetime.datetime.now())
+            if data:
+                for row in data:
+                    keywords= row['keywords']     
+                    KeyWords.objects.create(keywords=keywords, userid=userid, curdate=curdate)
+                return JsonResponse({'msg':'it works!', 'code':0})
+            else:
+                return JsonResponse({"msg":"no content", 'code': 2})
+
+    else:
+        return JsonResponse({'msg':'no loggin!', 'code':1})
+
+def remove_all_kw(request):
+     if request.method == "POST":
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                KeyWords.objects.filter(id=id).delete()
+            return JsonResponse({"msg":"it works!"})
+        else:
+            return JsonResponse({"msg":'it fails!'})
 
 def delete_keywords(request):
     uid = request.COOKIES.get('username', '')
