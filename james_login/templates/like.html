@@ -10,7 +10,6 @@
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
      <script src="http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
      <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
-{#    <script src="http://issues.wenzhixin.net.cn/bootstrap-table/ga.js"></script>#}
     <script>
          function getCookie(name) {
     var cookieValue = null;
@@ -38,7 +37,7 @@ $.ajaxSetup({
 });
         function operateFormatter(value, row, index) {
         return [
-            '<a class="remove" href="javascript:void(0)" style="margin-left:30px" title="Go away">',
+            '<a class="remove" href="javascript:void(0)" style="margin-left:30px" title="删除">',
             '<i class="glyphicon glyphicon-remove"></i>',
             '</a>'
         ].join('');
@@ -114,5 +113,7 @@ $.ajaxSetup({
           });
         });
     </script>
+    <div class='container'>
 <table id="tab"></table>
+</div>
 {% endblock %}
