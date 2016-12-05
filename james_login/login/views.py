@@ -202,7 +202,6 @@ def show_product(request):
     response_data = json.dumps(data_list)
     return HttpResponse(response_data, content_type='application/json; charset=utf8')
 
-
 def delete_product(request):
     uid = request.COOKIES.get('username', '')
     if request.method == "POST":
@@ -223,6 +222,20 @@ def like_product(request):
     else: return JsonResponse({'msg': "It fails!"})
 
 
+def remove_all_kwproduct(request):
+    if request.method == "POST":
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                KWProducts.objects.filter(id=id).delete()
+            return JsonResponse({"msg":"it works!"})
+        else:
+            return JsonResponse({"msg":'it fails!'})
+
+
 def delete_kw_product(request):
     uid = request.COOKIES.get('username', '')
     if request.method == "POST":
@@ -232,7 +245,17 @@ def delete_kw_product(request):
             return JsonResponse({'msg': "It works!"})
     else:return JsonResponse({'msg': "It fails!"})
 
-
+def likeall_kw_product(request):
+    uid = request.COOKIES.get('username', '')
+    if request.method == "POST":
+        if uid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                KWProducts.objects.filter(id=id).update(status=1)
+            return JsonResponse({'msg': "It works!"})
+    else: return JsonResponse({'msg': "It fails!"})
 def like_kw_product(request):
     uid = request.COOKIES.get('username', '')
     if request.method == "POST":

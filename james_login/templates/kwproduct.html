@@ -178,10 +178,59 @@
 
         })
     </script>
-    
+   <script type="text/javascript">
+    function getSlectionids(){
+        var $table = $('#protab');
+        var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
+                return row.id;
+            });
+        return ids
+    };
+</script>
+<script type="text/javascript">
+    $(function(){
+        var $table = $('#protab');
+        $("#removeall").click(function(){
+       var ids = getSlectionids();
+       $.ajax({
+        url: '../remove_all_kwproduct',
+        data:{
+            ids: JSON.stringify({'ids': ids})
+        },
+        type: "post"
+       });
+        $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+    });
+    $('#likeall').click(function() {
+        var ids = getSlectionids();
+        $.ajax({
+            url:'../likeall_kw_product',
+           data:{
+            ids: JSON.stringify({'ids': ids})
+        },
+        type: "post"
+       });
+         setTimeout(function(){$("[name='refresh']").click()}, 100);
+        })
+    });
+</script> 
+
 <body>
     <div class="container">
         <h1>关键词产品</h1>
+        <div id="toolbar">
+        <button id="removeall" class="btn btn-danger radius" >
+            <i class="glyphicon glyphicon-trash"></i> 批量删除
+        </button>
+        <button id="likeall" class="btn btn-success radius" >
+            <i class="glyphicon glyphicon-heart"></i> 批量认领          
+        </button>
+        <form method="post" action="http://localhost/test" enctype="multipart/form-data" style="display:none">
+        <input id="fileupload" type="file"  accept=".csv">
+        </form>
         <table id="protab" ></table>
     </div>
 </body>
