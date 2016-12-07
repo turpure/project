@@ -32,7 +32,7 @@ function shopFormatter(value) {
         var $fileupload = document.getElementById('fileupload');
         $fileupload.addEventListener('change',function(){
             if(!$fileupload.value){
-                console.log("no file chosed");
+                // console.log("no file chosed");
             }
            var file = $fileupload.files[0];
             var reader = new FileReader();
@@ -229,7 +229,7 @@ function shopFormatter(value) {
         };
         operateEvents = {
             'click .sync': function(e,value,row, index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 $.ajax({
                     url:'update_shops',
                     data:{
@@ -249,13 +249,13 @@ function shopFormatter(value) {
 
         },
             'click .add':function(e,value,row,index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 $("#shop").val('');
                 $('#myModal').modal();
             },
             'click .edit':function(e,value,row,index) {
                 $('#editModal').modal();
-                console.log(value, row, index);
+                // console.log(value, row, index);
 {#                var shopname = $("[data-index='"+index+"']").children().eq(2).text();#}
 {#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
 {#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
@@ -266,10 +266,10 @@ function shopFormatter(value) {
                 $("#edit_shop").val(shopname);
                 $("#edit_feedback").val(feedback);
 {#                console.log(shopname,feedback);#}
-                console.log(shopname, feedback,uid);
+                // console.log(shopname, feedback,uid);
             },
             'click .delete': function (e,value, row,index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 var id =row.id;
                 $.ajax({
                     url:'delete_shops',
@@ -283,7 +283,7 @@ function shopFormatter(value) {
                setTimeout(function(){$("[name='refresh']").click()}, 100);
             },
             'click .view':function(e,value,row,index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 $("#view").attr('href','show_product/?name='+ row.shopname);
             }
         };

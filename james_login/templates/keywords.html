@@ -28,8 +28,9 @@
         };
         operateEvents = {
             'click .sync': function(e,value,row, index) {
-                console.log(value, row, index);
-                console.log(row.id,row.keywords);
+                // console.log(value, row, index);
+                // console.log(row.id,row.keywords);
+                
                 $.ajax({
                     url:'sync_keywords',
                     data:{
@@ -46,7 +47,7 @@
 
         },
             'click .add':function(e,value,row,index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 $('#keywords').val('');
                 $('#myModal').modal();
                 
@@ -54,7 +55,7 @@
             },
             'click .edit':function(e,value,row,index) {
                 $('#editModal').modal();
-                console.log(value, row, index);
+                // console.log(value, row, index);
 {#                var shopname = $("[data-index='"+index+"']").children().eq(2).text();#}
 {#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
 {#                var feedback = $("[data-index='"+index+"']").children().eq(3).text();#}
@@ -63,10 +64,10 @@
                 $('#uid').val(uid);
                 $("#edit_keywords").val(keywords);
 
-                console.log(keywords,uid);
+                // console.log(keywords,uid);
             },
             'click .delete': function (e,value, row,index) {
-                console.log(value, row, index);
+                // console.log(value, row, index);
                 var id =row.id;
                 $.ajax({
                     url:'delete_keywords',
@@ -101,9 +102,9 @@
             });
             $("#edit_submit").click(function () {
                 var kw =$("#edit_keywords").val();
-                console.log(kw);
+                // console.log(kw);
                 var id= $("#uid").val();
-                console.log(id);
+                // console.log(id);
                 $.ajax({
                     url:'edit_keywords',
                     data:{
@@ -188,7 +189,7 @@
         var $fileupload = document.getElementById('fileupload');
         $fileupload.addEventListener('change',function(){
             if(!$fileupload.value){
-                console.log("no file chosed");
+                // console.log("no file chosed");
             }
            var file = $fileupload.files[0];
             var reader = new FileReader();
