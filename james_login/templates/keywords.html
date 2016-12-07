@@ -8,6 +8,7 @@
  
     <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
     <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
+     <script src="{% static 'tinytools/exportcsv.min.js' %}"></script>
 <script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="http://www.ziqiangxuetang.com/media/django/csrf.js"></script>
 <script src="//cdn.bootcss.com/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
@@ -244,10 +245,14 @@
     }); 
 
     $("#addall").click(function(){
-        // alert('it!');
         $("#fileupload").click();
         uploadFile();
     }); 
+
+    $("#kwtemplates").click(function(){
+        var data = [['keywords']];
+        alasql("SELECT * INTO CSV('keywords.csv') FROM ?",[data]);
+    });
     });
 </script>
     <div class="container">
@@ -263,8 +268,8 @@
         </form>
 
  
-        <button id="syncall" class="btn btn-primary radius"  style="display:none">
-            <i class="glyphicon glyphicon-transfer"></i> 批量同步
+         <button id="kwtemplates" class="btn btn-primary radius"  >
+            <i class="glyphicon glyphicon-download-alt"></i> 下载模板
         </button>
     
 </div>

@@ -111,7 +111,10 @@ def addall(request):
 def get_shops(request):
     userid = request.COOKIES.get('username', '')
     if userid:
-        return JsonResponse(dict(data=list(Shops.objects.filter(userid__exact=userid).order_by('-id').values())))
+        try:
+            return JsonResponse(dict(data=list(Shops.objects.filter(userid__exact=userid).order_by('-id').values())))
+        except  ValueError:
+            return JsonResponse({'msg':'no shops!'})
 
 
 def add_shops(request):
@@ -200,7 +203,10 @@ def show_product(request):
         data_list.append(detail)
 
     response_data = json.dumps(data_list)
-    return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    try:
+        return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    except  ValueError:
+        return JsonResponse({'msg':'no products of shops!'})
 
 def delete_product(request):
     uid = request.COOKIES.get('username', '')
@@ -313,7 +319,10 @@ def product_liked(request):
         data_list.append(detail)
 
     response_data = json.dumps(data_list)
-    return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    try:
+        return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    except  ValueError:
+        return JsonResponse({'msg':'no products liked yet!'})
 
 
 def editsku(request):
@@ -336,7 +345,10 @@ def get_keywords(request):
     uid = request.COOKIES.get('username', '')
     # id = request.GET.get('id')
     if uid:
-        return JsonResponse(dict(data=list(KeyWords.objects.filter(userid__exact=uid).order_by('-id').values())))
+        try:
+            return JsonResponse(dict(data=list(KeyWords.objects.filter(userid__exact=uid).order_by('-id').values())))
+        except  ValueError:
+            return JsonResponse({'msg':'no keywords yet!'})
 
 
 
@@ -438,7 +450,10 @@ def show_kw_product(request):
         data_list.append(detail)
 
     response_data = json.dumps(data_list)
-    return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    try:
+        return HttpResponse(response_data, content_type='application/json; charset=utf8')
+    except  ValueError:
+        return JsonResponse({'msg':'no products of kws yet!'})
 
 
 def watch_kw_shop(request):
