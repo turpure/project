@@ -5,7 +5,7 @@
     <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
     <script src="{% static 'tinytools/exportcsv.min.js' %}"></script>
     <script src="{% static 'tinytools/importcsv.min.js' %}"></script>
-    
+
     <script>
         function operateFormatter(value, row, index) {
             return [
@@ -209,6 +209,7 @@
                     }
                     else {
                         $("[name='refresh']").click();
+                        alert('上传成功！');
                     }
                 }
 

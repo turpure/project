@@ -5,7 +5,6 @@
     <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
     <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
     <script src="{% static 'tinytools/exportcsv.min.js' %}"></script>
-    <!-- <script src="//cdn.bootcss.com/jquery-csv/0.71/jquery.csv-0.71.min.js"></script> -->
     <script src="{% static 'tinytools/importcsv.min.js' %}"></script>
 
 
@@ -54,6 +53,7 @@ function shopFormatter(value) {
                     }
                     else {
                         $("[name='refresh']").click();
+                         alert('上传成功！');
                     }
                 }
 
@@ -238,11 +238,14 @@ function shopFormatter(value) {
                     },
                     type:'post',
                     dataType:'text',
+                    success: function(data){
+                        $("[name='refresh']").click();
+                         alert("已经加入待更新队里，请稍后查看！");
+                    }
 
                 });
-{#                $('#tab').bootstrapTable('destroy');#}
-                setTimeout(function(){$("[name='refresh']").click()}, 100);
-                alert("已经加入待更新队里，请稍后查看！");
+                // setTimeout(function(){$("[name='refresh']").click()}, 100);
+                // alert("已经加入待更新队里，请稍后查看！");
 
         },
             'click .add':function(e,value,row,index) {
