@@ -30,7 +30,7 @@
             'click .sync': function(e,value,row, index) {
                 // console.log(value, row, index);
                 // console.log(row.id,row.keywords);
-                
+
                 $.ajax({
                     url:'sync_keywords',
                     data:{
@@ -42,8 +42,9 @@
 
                 });
 {#                $('#tab').bootstrapTable('destroy');#}
-                setTimeout(function(){$("[name='refresh']").click()}, 100);
+                // setTimeout(function(){$("[name='refresh']").click()}, 100);
                 alert("已经加入待更新队里，请稍后查看！");
+                $("[name='refresh']").click()
 
         },
             'click .add':function(e,value,row,index) {

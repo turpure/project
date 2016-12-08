@@ -239,13 +239,16 @@ function shopFormatter(value) {
                     type:'post',
                     dataType:'text',
                     success: function(data){
-                        $("[name='refresh']").click();
-                         alert("已经加入待更新队里，请稍后查看！");
+                        // $("[name='refresh']").click();
+                         // alert("已经加入待更新队里，请稍后查看！");
+                         console.log('done!');
                     }
 
                 });
+                 alert("已经加入待更新队里，请稍后查看！");
                 // setTimeout(function(){$("[name='refresh']").click()}, 100);
-                // alert("已经加入待更新队里，请稍后查看！");
+                $("[name='refresh']").click()
+               
 
         },
             'click .add':function(e,value,row,index) {
