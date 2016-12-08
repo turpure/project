@@ -109,7 +109,8 @@ def get_item_list(shop_name):
         items = my_list.get_list(arg[0], arg[1], arg[2])
         if items:
             for item in items:
-                yield item
+                if item:
+                    yield item
 
 
 def handle(id, uid):
@@ -137,7 +138,10 @@ def handle_kw(id, uid, keywords):
 
 def update_shop_products(shopname, uid):
     p = Pool(4)
-    p.map(partial(handle, uid=uid),  get_item_list(shopname))
+    try:
+        p.map(partial(handle, uid=uid),  get_item_list(shopname))
+    except Exception as e:
+        print e
     p.close()
     p.join()
 
@@ -145,9 +149,12 @@ def update_shop_products(shopname, uid):
 
 def update_keywords_product(keywords, uid):
     p = Pool(4)
-    item_list = get_category_list(keywords)
-    # print item_list
-    p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
+    try:
+        item_list = get_category_list(keywords)
+        # print item_list
+        p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
+    except Exception as e:
+        print e
     p.close()
     p.join()
 
