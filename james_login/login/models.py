@@ -65,7 +65,7 @@ class Products(models.Model):
     deltadays = models.IntegerField()
     uid = models.CharField(max_length=50)
     status = models.CharField(max_length=2,default=0)
-    mysku = models.CharField(max_length=20, null=True)
+    mysku = models.CharField(max_length=20, null=True,blank=True)
     def __unicode__(self):
         return self.itemid
 
@@ -103,7 +103,7 @@ class KWProducts(models.Model):
     deltadays = models.IntegerField()
     uid = models.CharField(max_length=50)
     status = models.CharField(max_length=2,default=0)
-    mysku = models.CharField(max_length=2,null=True)
-    keywords = models.CharField(max_length=50, null=True)
+    mysku = models.CharField(max_length=2,null=True,blank=True)
+    keywords = models.CharField(max_length=50, null=True,blank=True)
     def __unicode__(self):
         return self.itemid
