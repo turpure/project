@@ -1,15 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<link href="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.css" rel="stylesheet"/>
-<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
- <script src="{% static 'assets/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js' %}"></script>
-    <script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
-<script src="http://cdn.bootcss.com/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js"></script>
-     <script src="http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-     <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+<script src="{% static 'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/src/extensions/multiple-sort/bootstrap-table-multiple-sort.js' %}"></script>
+    <script src="{% static 'tinytools/exportcsv.min.js' %}"></script>
+    <script src="{% static 'tinytools/importcsv.min.js' %}"></script>
     <script>
          function getCookie(name) {
     var cookieValue = null;
