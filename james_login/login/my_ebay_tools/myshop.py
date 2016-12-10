@@ -21,54 +21,7 @@ def insert_data(detail, uid):
         'currentprice, quantitysold, quantitysoldinstore,',
         'shippingservice,shippingcost, title, hitcount,sku,',
         'galleryurl,listduration, privatelisting,deltatitle,',
-        'deltasold,deltahit, deltaprice, listingstatus,deltadays,starttime,uid,curdate,status',
-        ')',
-        ' values',
-        '(',
-        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,',
-        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,',
-        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s',
-        ')',
-    ])
-    try:
-        con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
-        cur = con.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute(check, (detail['itemid'],))
-        result = cur.fetchone()
-        if not result:
-            cur.execute(query, (detail['country'], detail['currency'],
-                                detail['hitcounter'], detail['itemid'],
-                                detail['viewitemurl'], detail['location'],
-                                detail['categoryid'], detail['feedbackscore'],
-                                detail['usersite'], detail['userid'],
-                                detail['storeowner'], detail['currentprice'],
-                                detail['quantitysold'], detail['quantitysoldinstore'],
-                                detail['shippingservice'], detail['shippingcost'],
-                                detail['title'], detail['hitcount'], detail['sku'],
-                                detail['galleryurl'], detail['listduration'],
-                                detail['privatelisting'], 0, 0, 0, 0,
-                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0
-                                ))
-            print 'puting: %s' % detail['itemid']
-            con.commit()
-    except Exception as e:
-        print e
-    con.close()
-
-
-def insert_kw_data(detail, uid, keywords):
-    now = datetime.datetime.now()
-    check = 'select id from login_kwproducts where itemid=%s'
-    query = ''.join([
-        'insert into login_kwproducts',
-        '(',
-        'country,currency,hitcounter,itemid,',
-        'viewitemurl,location,categoryid,',
-        'feedbackscore,usersite,userid,storeowner,',
-        'currentprice, quantitysold, quantitysoldinstore,',
-        'shippingservice,shippingcost, title, hitcount,sku,',
-        'galleryurl,listduration, privatelisting,deltatitle,',
-        'deltasold,deltahit, deltaprice, listingstatus,deltadays,starttime,uid,curdate,status,keywords',
+        'deltasold,deltahit, deltaprice, listingstatus,deltadays,starttime,uid,curdate,status,mysku',
         ')',
         ' values',
         '(',
@@ -94,7 +47,54 @@ def insert_kw_data(detail, uid, keywords):
                                 detail['title'], detail['hitcount'], detail['sku'],
                                 detail['galleryurl'], detail['listduration'],
                                 detail['privatelisting'], 0, 0, 0, 0,
-                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0, keywords
+                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0,''
+                                ))
+            print 'puting: %s' % detail['itemid']
+            con.commit()
+    except Exception as e:
+        print e
+    con.close()
+
+
+def insert_kw_data(detail, uid, keywords):
+    now = datetime.datetime.now()
+    check = 'select id from login_kwproducts where itemid=%s'
+    query = ''.join([
+        'insert into login_kwproducts',
+        '(',
+        'country,currency,hitcounter,itemid,',
+        'viewitemurl,location,categoryid,',
+        'feedbackscore,usersite,userid,storeowner,',
+        'currentprice, quantitysold, quantitysoldinstore,',
+        'shippingservice,shippingcost, title, hitcount,sku,',
+        'galleryurl,listduration, privatelisting,deltatitle,',
+        'deltasold,deltahit, deltaprice, listingstatus,deltadays,starttime,uid,curdate,status,mysku,keywords',
+        ')',
+        ' values',
+        '(',
+        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,',
+        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,',
+        '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s',
+        ')',
+    ])
+    try:
+        con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
+        cur = con.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute(check, (detail['itemid'],))
+        result = cur.fetchone()
+        if not result:
+            cur.execute(query, (detail['country'], detail['currency'],
+                                detail['hitcounter'], detail['itemid'],
+                                detail['viewitemurl'], detail['location'],
+                                detail['categoryid'], detail['feedbackscore'],
+                                detail['usersite'], detail['userid'],
+                                detail['storeowner'], detail['currentprice'],
+                                detail['quantitysold'], detail['quantitysoldinstore'],
+                                detail['shippingservice'], detail['shippingcost'],
+                                detail['title'], detail['hitcount'], detail['sku'],
+                                detail['galleryurl'], detail['listduration'],
+                                detail['privatelisting'], 0, 0, 0, 0,
+                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0,,'' keywords
                                 ))
             print 'puting: %s' % detail['itemid']
             con.commit()
