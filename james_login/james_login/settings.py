@@ -15,8 +15,8 @@ import djcelery
 
 # celery settings
 
-# djcelery.setup_loader()
-# BROKER_URL = 'django://'
+djcelery.setup_loader()
+BROKER_URL = 'redis://localhost:6379/0'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'djcelery',
-    # 'kombu.transport.django',
+    'djcelery',
+    'kombu.transport.django',
     'login',
 ]
 

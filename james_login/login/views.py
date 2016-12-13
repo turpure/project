@@ -6,10 +6,15 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404,JsonResponse
 import json
 import datetime
 from my_ebay_tools.myshop import update_shop_products, update_keywords_product
-
+from login.tasks import _do_kground_work
 
 def home(request):
     return render(request, 'home.html')
+
+
+def index(request):
+    _do_kground_work.delay('GreenPine')
+    return HttpResponse("Hello World!")
 
 
 def register(request):

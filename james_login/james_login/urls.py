@@ -18,6 +18,7 @@ from django.contrib import admin
 import login.views as login_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^index/$',login_views.index, name='index'),
     url(r'^home/$', login_views.home, name='home'),
     url(r'^home/register/', login_views.register, name='register'),
     url(r'^home/logout', login_views.logout, name='logout'),
