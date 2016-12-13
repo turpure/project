@@ -94,7 +94,7 @@ def insert_kw_data(detail, uid, keywords):
                                 detail['title'], detail['hitcount'], detail['sku'],
                                 detail['galleryurl'], detail['listduration'],
                                 detail['privatelisting'], 0, 0, 0, 0,
-                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0,,'' keywords
+                                detail['listingstatus'], 0, detail['starttime'], uid, now, 0,'' ,keywords
                                 ))
             print 'puting: %s' % detail['itemid']
             con.commit()
