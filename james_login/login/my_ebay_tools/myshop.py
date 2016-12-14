@@ -136,27 +136,40 @@ def handle_kw(id, uid, keywords):
             insert_kw_data(detail, uid, keywords)
 
 
+# def update_shop_products(shopname, uid):
+#     p = Pool(4)
+#     try:
+#         p.map(partial(handle, uid=uid),  get_item_list(shopname))
+#     except Exception as e:
+#         print e
+#     p.close()
+#     p.join()
+
 def update_shop_products(shopname, uid):
-    p = Pool(4)
     try:
-        p.map(partial(handle, uid=uid),  get_item_list(shopname))
+        for item in get_item_list(shopname):
+            handle(item,uid)
     except Exception as e:
         print e
-    p.close()
-    p.join()
 
 
+# def update_keywords_product(keywords, uid):
+#     p = Pool(4)
+#     try:
+#         item_list = get_category_list(keywords)
+#         # print item_list
+#         p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
+#     except Exception as e:
+#         print e
+#     p.close()
+#     p.join()
 
 def update_keywords_product(keywords, uid):
-    p = Pool(4)
     try:
-        item_list = get_category_list(keywords)
-        # print item_list
-        p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
+        for item in get_category_list(keywords):
+                handle_kw(item,uid,keywords)
     except Exception as e:
         print e
-    p.close()
-    p.join()
 
 
 if __name__ =="__main__":

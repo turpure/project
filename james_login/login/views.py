@@ -5,8 +5,8 @@ from models import User, Shops, Products, KeyWords, KWProducts
 from django.http import HttpResponse, HttpResponseRedirect, Http404,JsonResponse
 import json
 import datetime
-from my_ebay_tools.myshop import update_shop_products, update_keywords_product
-from login.tasks import _do_kground_work
+# from my_ebay_tools.myshop import update_shop_products, update_keywords_product
+from login.tasks import _do_kground_work, sync_shop_products, sync_keywords_product
 
 def home(request):
     return render(request, 'home.html')
@@ -172,7 +172,8 @@ def update_shops(request):
             shopname = request.POST.get('shopname')
             id = request.POST.get('id')
             Shops.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
-            update_shop_products(shopname, userid)
+            sync_shop_products.delay(shopname,userid)
+            # update_shop_products(shopname, userid)
             return JsonResponse({'msg': "It works!"})
     else:
         return JsonResponse({'msg': "It fails!"})
@@ -433,7 +434,8 @@ def sync_keywords(request):
             keywords = request.POST.get('keywords')
             id = request.POST.get('id')
             KeyWords.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
-            update_keywords_product(keywords, userid)
+            sync_keywords_product.delay(keywords, userid)
+            # update_keywords_product(keywords, userid)
             return JsonResponse({'msg': "It works!"})
     else:
         return JsonResponse({'msg': "It fails!"})
