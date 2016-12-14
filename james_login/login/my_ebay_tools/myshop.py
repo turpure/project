@@ -99,7 +99,7 @@ def insert_kw_data(detail, uid, keywords):
             print 'puting: %s' % detail['itemid']
             con.commit()
     except Exception as e:
-        print e
+        print '%s:%s' % ('insert_kw_data', e)
     con.close()
 
 def get_item_list(shop_name):
@@ -150,7 +150,7 @@ def update_shop_products(shopname, uid):
         for item in get_item_list(shopname):
             handle(item,uid)
     except Exception as e:
-        print e
+        print ' %s;%s' % ('update_shop_product', e)
 
 
 # def update_keywords_product(keywords, uid):
@@ -169,8 +169,7 @@ def update_keywords_product(keywords, uid):
         for item in get_category_list(keywords):
                 handle_kw(item,uid,keywords)
     except Exception as e:
-        print e
-
+        print ' %s;%s' % ('update_keywords_product', e)
 
 if __name__ =="__main__":
     # for itemid in get_item_list('7color7'):
@@ -178,6 +177,6 @@ if __name__ =="__main__":
     # item_list = ['112146443310']
     # detail = map(handle, item_list)
     # print detail
-    update_keywords_product('cosplay tools', 'test')
+    update_keywords_product('men shoes', 'test')
 
 

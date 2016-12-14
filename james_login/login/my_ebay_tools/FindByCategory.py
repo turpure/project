@@ -1,9 +1,9 @@
 
 from ebaysdk.finding import Connection
 from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool 
 from functools import partial
 from datetime import date, datetime
-
 
 def find_advanced(page, key_words):
     "get the 100*100 listings in Category 20349 and limited using keywords"
@@ -11,7 +11,7 @@ def find_advanced(page, key_words):
     item_list = list()
     api = Connection(
         # domain='api.ebay.com',
-        timeout=6,
+        timeout=8,
         appid='ZhouPeng-3242-4cc7-88fd-310f513fcd71',
         devid='df3f2898-65b1-4e15-afd5-172b989903aa',
         certid='a0e19cf9-9b2b-457f-b6f1-87f3f600ca63',
@@ -33,34 +33,54 @@ def find_advanced(page, key_words):
     }
     input_para['paginationInput']['pageNumber'] = page
 
-    # print response.reply
-    try:
-        response = api.execute('findItemsAdvanced', input_para)
-        items = response.reply.searchResult.item
-        for item in items:
-            # input_single(item.itemId,item.listingInfo.startTime,key_words,owner)
-            id = item.itemId
-            start_time = item.listingInfo.startTime
-            today = datetime2date(datetime.now())
-            start_date = datetime2date(start_time)
-            delta_days = (today-start_date).days
-            # print id, delta_days, start_time
-            if delta_days <= 30:
-                item_list.append(id)
-        obj_list = list(set(item_list))
-        # print obj_list
-        return obj_list
-    except Exception as e:
-        print e
+    flag = 6
+    
+    while  flag>0:
+        try:
+            response = api.execute('findItemsAdvanced', input_para)
+            items = response.reply.searchResult.item
+            for item in items:
+                # input_single(item.itemId,item.listingInfo.startTime,key_words,owner)
+                id = item.itemId
+                start_time = item.listingInfo.startTime
+                today = datetime2date(datetime.now())
+                start_date = datetime2date(start_time)
+                delta_days = (today-start_date).days
+                # print id, delta_days, start_time
+                if delta_days <= 60:
+                    item_list.append(id)
+            obj_list = list(set(item_list))
+            # print obj_list
+            return obj_list
+        except IOError as e:
+            print '%s:%s' % ('find_advanced', e)
+            flag -=1
+        except AttributeError as e:
+            print '%s:%s' % ('find_advanced', e)
+
 
 
 def datetime2date(time):
     time_split = str(time)[:10].split('-')
     return date(int(time_split[0]), int(time_split[1]), int(time_split[2]))
 
+# multi process
+# def get_category_list(keywords):
+#     p = Pool(4)
+#     test_set = p.map(partial(find_advanced, key_words=keywords), range(1, 50))
+#     sum_list = []
+#     if test_set:
+#         for item in test_set:
+#             if item:
+#                 sum_list = sum_list + item
+#             # print sum_list
+#     p.close()
+#     p.join()
+#     return list(set(sum_list))
 
+#multi threading
 def get_category_list(keywords):
-    p = Pool(4)
+    p = ThreadPool(20)
     test_set = p.map(partial(find_advanced, key_words=keywords), range(1, 50))
     sum_list = []
     if test_set:
@@ -73,9 +93,17 @@ def get_category_list(keywords):
     return list(set(sum_list))
 
 
+# single process
+# def get_category_list(keywords):
+#     for page in range(1,50):
+#         ret = find_advanced(page,keywords)
+#         yield ret
+  
+
+
 if __name__ == "__main__":
-    # for i in range(1, 50):
-    #     for item in find_advanced("iphone 7 case", i):
-    #         print item
-    print get_category_list('christmas flag')
-    # print datetime2date('2016-05-21 00:25:23')
+    # for i in range(20):
+        # find_advanced(i,'christmas flag')
+    for data in get_category_list('christmas flag'):
+        print data
+    
