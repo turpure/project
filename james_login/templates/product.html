@@ -219,7 +219,7 @@
 </script> 
 </head>
 <body>
-    <div class="container">
+        <div style="margin:0 auto;">
         <h1>店铺产品</h1>
         <div id="toolbar">
         <button id="removeall" class="btn btn-danger radius" >
@@ -228,12 +228,13 @@
         <button id="likeall" class="btn btn-success radius" >
             <i class="glyphicon glyphicon-heart"></i> 批量认领          
         </button>
+        </div >
         <form method="post" action="http://localhost/test" enctype="multipart/form-data" style="display:none">
         <input id="fileupload" type="file"  accept=".csv">
         </form>
         <table id="protab" ></table>
     </div>
         <table id="protab" ></table>
-    </div>
+   
 </body>
 </html>

@@ -92,6 +92,30 @@ def  remove_all_shops(request):
             return JsonResponse({"msg":'it fails!'})
 
 
+def shops_syncall(request):
+    if request.method == "POST":
+        userid = request.COOKIES.get('username','')
+        if userid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                print id
+                shop = Shops.objects.values('shopname').filter(id=id)[0]
+                if shop:
+                    shopname = shop['shopname']
+                else:
+                    shopname = ''
+                    print shopname
+                Shops.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
+                sync_shop_products.delay(shopname,userid)
+            return JsonResponse({'msg':'it works!'})
+        else:
+            return JsonResponse({"msg":'it fails!'})
+    else:
+            return JsonResponse({"msg":'wrong!'})
+
+
 
 def addall(request):
     if request.method == 'POST':
@@ -270,6 +294,26 @@ def remove_all_kwproduct(request):
             ids = ids_dict['ids']
             for id in ids:
                 KWProducts.objects.filter(id=id).delete()
+            return JsonResponse({"msg":"it works!"})
+        else:
+            return JsonResponse({"msg":'it fails!'})
+
+def kw_syncall(request):
+    if request.method == "POST":
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            ids_string = request.POST.get('ids')
+            ids_dict = json.loads(ids_string)
+            ids = ids_dict['ids']
+            for id in ids:
+                keywords = request.POST.get('keywords')
+                kw = KeyWords.objects.values('keywords').filter(id=id)[0]
+                if kw:
+                    keywords = kw['keywords']
+                else:
+                    keywords = ''
+                KeyWords.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
+                sync_keywords_product.delay(keywords, userid)
             return JsonResponse({"msg":"it works!"})
         else:
             return JsonResponse({"msg":'it fails!'})

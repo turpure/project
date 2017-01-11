@@ -2,6 +2,7 @@
 from twisteditem import GetFiledsByItemid
 import datetime
 from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool 
 from ebaydate import monthrange
 from getlist import GetList
 import MySQLdb
@@ -136,40 +137,28 @@ def handle_kw(id, uid, keywords):
             insert_kw_data(detail, uid, keywords)
 
 
-# def update_shop_products(shopname, uid):
-#     p = Pool(4)
-#     try:
-#         p.map(partial(handle, uid=uid),  get_item_list(shopname))
-#     except Exception as e:
-#         print e
-#     p.close()
-#     p.join()
-
 def update_shop_products(shopname, uid):
+    p = ThreadPool(4)
     try:
-        for item in get_item_list(shopname):
-            handle(item,uid)
+        p.map(partial(handle, uid=uid),  get_item_list(shopname))
     except Exception as e:
-        print ' %s;%s' % ('update_shop_product', e)
+        print e
+    p.close()
+    p.join()
 
-
-# def update_keywords_product(keywords, uid):
-#     p = Pool(4)
-#     try:
-#         item_list = get_category_list(keywords)
-#         # print item_list
-#         p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
-#     except Exception as e:
-#         print e
-#     p.close()
-#     p.join()
 
 def update_keywords_product(keywords, uid):
+    p = ThreadPool(4)
     try:
-        for item in get_category_list(keywords):
-                handle_kw(item,uid,keywords)
+        item_list = get_category_list(keywords)
+        # print item_list
+        p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
     except Exception as e:
-        print ' %s;%s' % ('update_keywords_product', e)
+        print e
+    p.close()
+    p.join()
+
+
 
 if __name__ =="__main__":
     # for itemid in get_item_list('7color7'):

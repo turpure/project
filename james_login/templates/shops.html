@@ -16,6 +16,9 @@ function shopFormatter(value) {
     return url;
 
 }
+function dateFormatter(value){
+    return value.substr(0,10);
+}
 </script>
 <script type="text/javascript">
     function getSlectionids(){
@@ -90,6 +93,19 @@ function shopFormatter(value) {
         var data = [["shopname", "feedbackscore"]];
          alasql("SELECT * INTO CSV('shop.csv') FROM ?",[data]);
     })
+
+    $("#syncall").click(function(){
+        var ids = getSlectionids();
+        $.ajax({
+            url:'sp_syncall',
+            data:{
+                ids:JSON.stringify({'ids':ids}),
+                 },
+                type:'post'
+            
+        })
+        setTimeout(function(){$("[name='refresh']").click()}, 100);
+    })
     });
 </script>
 <div class="container">
@@ -108,6 +124,9 @@ function shopFormatter(value) {
  
         <button id="shopetemplates" class="btn btn-primary radius"  >
             <i class="glyphicon glyphicon-download-alt"></i> 下载模板
+        </button>
+        <button id="syncall" class="btn btn-info radius" >
+            <i class="glyphicon glyphicon-send"></i> 批量同步          
         </button>
 	
 </div>
@@ -363,11 +382,14 @@ function shopFormatter(value) {
                 },{
                     field:"curdate",
                     title:'创建日期',
-                    sortable:'true'
+                    sortable:'true',
+                    visible:false,  
+                    formatter:'dateFormatter'
                 },{
                     field:"updatetime",
                     title:'同步日期',
-                    sortable:'true'
+                    sortable:'true',
+                    formatter:'dateFormatter'
                 },{
                  field:'operate',
                  title:'操作',

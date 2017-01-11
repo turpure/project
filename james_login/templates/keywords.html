@@ -150,11 +150,14 @@
                 },{
                     field:"curdate",
                     title:'创建日期',
-                    sortable:'true'
+                    sortable:'true',
+                    visible:false,
+                    formatter: 'dateFormatter'
                 },{
                     field:"updatetime",
                     title:'同步日期',
-                    sortable:'true'
+                    sortable:'true',
+                    formatter:'dateFormatter'
                 },{
                  field:'operate',
                  title:'操作',
@@ -173,6 +176,9 @@
         var url = head_url + kw + tail_url;
         var anchor = "<a target='_blank' href='" + url+ "'>" + value +"</a>";
         return anchor;
+    }
+    function dateFormatter(value){
+        return value.substr(0,10);
     }
     </script>
     <script type="text/javascript">
@@ -238,6 +244,17 @@
                 values: ids
             });
     }); 
+        $("#syncall").click(function(){
+            var ids = getSlectionids();
+            $.ajax({
+                url:'kw_syncall',
+                data:{
+                    ids:JSON.stringify({'ids':ids})
+            },
+            type:'post'
+        })
+            setTimeout(function(){$("[name='refresh']").click()}, 100);
+    })
 
     $("#addall").click(function(){
         $("#fileupload").click();
@@ -266,6 +283,9 @@
  
          <button id="kwtemplates" class="btn btn-primary radius"  >
             <i class="glyphicon glyphicon-download-alt"></i> 下载模板
+        </button>
+         <button id="syncall" class="btn btn-info radius" >
+            <i class="glyphicon glyphicon-send"></i> 批量同步          
         </button>
     
 </div>
