@@ -219,9 +219,9 @@
 </script> 
 
 <body>
-    <div class="container">
-        <h1>关键词产品</h1>
-        <div id="toolbar">
+    <div >
+        <h1 align="center">关键词产品</h1>
+        <div id="toolbar" style="margin-left:5%">
         <button id="removeall" class="btn btn-danger radius" >
             <i class="glyphicon glyphicon-trash"></i> 批量删除
         </button>
@@ -231,7 +231,11 @@
         <form method="post" action="http://localhost/test" enctype="multipart/form-data" style="display:none">
         <input id="fileupload" type="file"  accept=".csv">
         </form>
-        <table id="protab" ></table>
+       
+    </div>
+    <div style="margin-left:5%; margin-right:5%">
+     <table id="protab" ></table>
+     </div>
     </div>
 </body>
 </html>
