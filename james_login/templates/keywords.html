@@ -178,7 +178,10 @@
         return anchor;
     }
     function dateFormatter(value){
-        return value.substr(0,10);
+        if(value){
+            return value.substr(0,10);
+        }
+        
     }
     </script>
     <script type="text/javascript">
