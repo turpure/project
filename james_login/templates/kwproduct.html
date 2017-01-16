@@ -17,15 +17,15 @@
     <script>
         function proOperateFormatter(value, row, index) {
             return [
-                    '<a class="like" href="javascript:void(0)" style="margin-left:10px" title="认领">',
-                    '认领产品|',
-                    '</a>',
-                    '<a class="remove" href="javascript:void(0)" style="margin-left:10px" title="删除">',
-                    '删除产品|',
-                    '</a>',
-                    '<a class="watch" href="javascript:void(0)" style="margin-left:10px" title="关注">',
+                    '<a class="like" href="javascript:void(0)" style="margin-left:10px" title="认领"><button class="btn btn-primary">',
+                    '认领产品',
+                    '</button></a>',
+                    '<a class="remove" href="javascript:void(0)" style="margin-left:10px" title="删除"><button class="btn btn-danger">',
+                    '删除产品',
+                    '</button></a>',
+                    '<a class="watch" href="javascript:void(0)" style="margin-left:10px" title="关注"><button class="btn btn-warning">',
                     '关注店铺',
-                    '</a>',
+                    '</button></a>',
 
             ].join('');
         };

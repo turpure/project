@@ -9,21 +9,21 @@
     <script>
         function operateFormatter(value, row, index) {
             return [
-                    '<a class="add" href="javascript:void(0)" style="margin-left:30px" title="add">',
-                    '增加关键字|',
-                    '</a>',
-                    '<a class="edit" href="javascript:void(0)" style="margin-left:30px" title="edit">',
-                    '修改关键字|',
-                    '</a>',
-                    '<a class="delete" href="javascript:void(0)" style="margin-left:30px" title="delete">',
-                    '删除关键字|',
-                    '</a>',
-                    '<a class="sync" href="javascript:void(0)" style="margin-left:30px" title="sync">',
-                    '同步产品|',
-                    '</a>',
-                    '<a class="view"  target="_blank" href="kwproduct/?kw=' + row.keywords + '" style="margin-left:30px" title="view">',
+                    '<a class="add" href="javascript:void(0)" style="margin-left:30px" title="add"><button class="btn btn-info">',
+                    '增加关键字',
+                    '</button></a>',
+                    '<a class="edit" href="javascript:void(0)" style="margin-left:30px" title="edit"><button class="btn btn-warning">',
+                    '修改关键字',
+                    '</button></a>',
+                    '<a class="delete" href="javascript:void(0)" style="margin-left:30px" title="delete"><button class="btn btn-danger">',
+                    '删除关键字',
+                    '</button></a>',
+                    '<a class="sync" href="javascript:void(0)" style="margin-left:30px" title="sync"><button class="btn btn-primary">',
+                    '同步产品',
+                    '</button></a>',
+                    '<a class="view"  target="_blank" href="kwproduct/?kw=' + row.keywords + '" style="margin-left:30px" title="view"><button class="btn btn-success">',
                     '查看产品',
-                    '</a>',
+                    '</button></a>',
             ].join('');
         };
         operateEvents = {
