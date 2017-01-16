@@ -1,5 +1,5 @@
 # -*-coding:utf-8-*-
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response,redirect
 from forms import UserForm, UserFormLogIN, ShopForm
 from models import User, Shops, Products, KeyWords, KWProducts
 from django.http import HttpResponse, HttpResponseRedirect, Http404,JsonResponse
@@ -31,12 +31,11 @@ def register(request):
                 # add one row in shop table
                 KeyWords.objects.create(userid=username, curdate=str(datetime.datetime.now()))
                 # add one row in keywords table
-                response = render(request, 'home.html')
                 try:
                     response.delete_cookie('username')
                 except Exception as e:
                     print e
-                return response
+                return redirect("login")
             else:
                 return HttpResponse('俩次密码不一样，请重新注册！')
     else:
@@ -67,7 +66,7 @@ def login(request):
 def logout(request):
     response = HttpResponse("Log out!")
     response.delete_cookie('username')
-    return response
+    return redirect('login')
 
 
 def dashboard(request):
