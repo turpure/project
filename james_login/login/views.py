@@ -5,6 +5,7 @@ from models import User, Shops, Products, KeyWords, KWProducts
 from django.http import HttpResponse, HttpResponseRedirect, Http404,JsonResponse
 import json
 import datetime
+from login.my_db_tools.get_data import get_recom
 # from my_ebay_tools.myshop import update_shop_products, update_keywords_product
 from login.tasks import _do_kground_work, sync_shop_products, sync_keywords_product
 
@@ -69,6 +70,46 @@ def logout(request):
     return redirect('login')
 
 
+def recommendation(request):
+    return render(request,'recommendation.html')
+
+
+def recom_products(request):
+    if request.method == "GET":
+        userid = request.COOKIES.get('username','')
+        if userid:
+            products_dict = {'data':[product for product in get_recom()]}
+            response = JsonResponse(products_dict)
+            return response
+        else:
+            response = JsonResponse({'data':['no products']})
+            return response
+    else:
+        response = JsonResponse({'data':['plase use method of get!']})
+        return response
+
+def operate_recom(request):
+    if request.method == "POST":
+        userid = request.COOKIES.get('username', '')
+        if userid:
+            tablename = request.POST.get('tablename')
+            id = request.POST.get('id')
+            operation = request.POST.get('operation')
+            if tablename=='products':
+                if operation == 'like':
+                    Products.objects.filter(id=id).update(status=1)
+                else:
+                    Products.objects.filter(id=id).delete()
+            else:
+                if operation =='like':
+                    KWProducts.objects.filter(id=id).update(status=1)
+                else:
+                    KWProducts.objects.filter(id=id).delete()
+
+        return JsonResponse({'msg':'it works!'})
+    else:
+        return JsonResponse({"msg":"please using methon of POST!"})
+ 
 def dashboard(request):
     return render(request, "dashboard.html")
 

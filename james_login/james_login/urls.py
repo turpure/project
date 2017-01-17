@@ -59,4 +59,7 @@ urlpatterns = [
     url(r'^home/show_kw_product$', login_views.show_kw_product, name='show_kw_product'),
     url(r'^home/watch_kw_shop$', login_views.watch_kw_shop, name='watch_kw_shop'),
     url(r'home/remove_liked', login_views.remove_liked, name='remove_liked'),
+    url(r'home/recommendation$',login_views.recommendation,name='recommendation'),
+    url(r'home/recom_products$',login_views.recom_products,name='recom_products'),
+    url(r'home/operate_recom',login_views.operate_recom,name="operate_recom"),
 ]

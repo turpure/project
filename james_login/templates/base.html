@@ -32,7 +32,6 @@
         function getUsername() {
             var username;
             try {
-                console.log(document.cookie)
                 name1 = document.cookie.split(";")[0].split("=")[1];
                 name2 = document.cookie.split(";")[1].split("=")[1]
                 if(name1.length>name2.length) {
@@ -49,7 +48,6 @@
             var username = getUsername();
             var login= $("#login");
             if(username.length>0){
-                console.log(username);
                 login.html( username + ", 你好!");
                 login.attr({href:'/home/logout'});
 
@@ -95,23 +93,11 @@
             <li ><a id="shops" href="/home/shops" >我的店铺</a></li>
               <li ><a id="kw" href="/home/keywords" >我的关键词</a></li>
               <li ><a id="like" href="/home/like" >我的认领</a></li>
-              <li ><a  href="" >推荐产品</a></li>
+              <li ><a  href="/home/recommendation" >推荐产品</a></li>
               <li ><a id="dashboard"  href="/home/dashboard" >个人表现</a></li>
           </ul>
         </div>
         <div  id="main-content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-{#        <div class="btn-group">#}
-{#  <button type="button" class="btn btn-default">批量操作</button>#}
-{#  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#    <span class="caret"></span>#}
-{#    <span class="sr-only">Toggle Dropdown</span>#}
-{#  </button>#}
-{#  <ul class="dropdown-menu">#}
-{#    <li><a href="#">批量增加</a></li>#}
-{#    <li><a href="#">批量删除</a></li>#}
-{#    <li><a href="#">批量同步</a></li>#}
-{#  </ul>#}
-{#</div>#}
 
           {% block content %} {% endblock %}
 
