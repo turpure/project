@@ -85,8 +85,10 @@ $.ajaxSetup({
               showRefresh:'true',
               showColumns:'true',
               showExport:'true',
+              showMultiSort:'true',
               toolbar:'toolbar',
               clickToSelect:'true',
+               sortPriority: [{"sortName": "starttime", "sortOrder":"desc"},{"sortName": "avgsold", "sortOrder":"desc"}],
               pageList: [10, 25, 50, 100, 500, 1000,2000,10000],
              columns:[{
                  field:'state',
