@@ -78,7 +78,7 @@ def recom_products(request):
     if request.method == "GET":
         userid = request.COOKIES.get('username','')
         if userid:
-            products_dict = {'data':[product for product in get_recom()]}
+            products_dict = {'data':[product for product in get_recom(userid)]}
             response = JsonResponse(products_dict)
             return response
         else:
