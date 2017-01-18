@@ -7,10 +7,10 @@ def get_recom(uid):
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
     cur = con.cursor(MySQLdb.cursors.DictCursor)
     sql = [
-            "select currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'products' as tablename",
+            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'products' as tablename",
             " from login_products where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid +"'",
             "union",
-           "select currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'kwproducts' as tablename",
+           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'kwproducts' as tablename",
             " from login_kwproducts where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid + "'",
            
             ]
