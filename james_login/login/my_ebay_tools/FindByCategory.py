@@ -11,7 +11,7 @@ def find_advanced(page, key_words):
     item_list = list()
     api = Connection(
         # domain='api.ebay.com',
-        timeout=8,
+        timeout=10,
         appid='ZhouPeng-3242-4cc7-88fd-310f513fcd71',
         devid='df3f2898-65b1-4e15-afd5-172b989903aa',
         certid='a0e19cf9-9b2b-457f-b6f1-87f3f600ca63',
@@ -34,7 +34,7 @@ def find_advanced(page, key_words):
     }
     input_para['paginationInput']['pageNumber'] = page
 
-    flag = 6
+    flag = 3
     
     while  flag>0:
         try:

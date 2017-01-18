@@ -32,9 +32,9 @@ $.ajaxSetup({
 });
         function operateFormatter(value, row, index) {
         return [
-            '<a class="remove" href="javascript:void(0)" style="margin-left:30px" title="删除">',
-            '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
+            '<a class="remove" href="javascript:void(0)" style="margin-left:30px" title="删除"><button class="btn btn-danger">',
+            '<i class="glyphicon glyphicon-trash"> 删除产品</i>',
+            '</button></a>'
         ].join('');
     }
 

@@ -105,7 +105,7 @@ def insert_kw_data(detail, uid, keywords):
 
 def get_item_list(shop_name):
     my_list = GetList()
-    for per in monthrange(1, 4):
+    for per in monthrange(1, 2):
         arg = (shop_name, per[0]+'T15:02:52.000Z', per[1]+'T15:02:52.000Z')
         items = my_list.get_list(arg[0], arg[1], arg[2])
         if items:

@@ -24,7 +24,7 @@ class GetList(object):
                             devid=self.idevid,
                             certid=self.icertid,
                             token=self.itoken,
-                            timeout=6,
+                            timeout=10,
                             config_file=None,
                             #proxy_host='127.0.0.1',
                             #proxy_port='1080'
@@ -36,7 +36,7 @@ class GetList(object):
         pattern=re.compile(r'<ItemID>(.*?)</ItemID>')
         fails=0
         # tstart=time.time
-        while fails<8:
+        while fails<3:
 
             try:
                 myresponse=self.mycon.execute('GetSellerList',request)
