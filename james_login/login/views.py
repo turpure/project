@@ -136,11 +136,13 @@ def shops_syncall(request):
     if request.method == "POST":
         userid = request.COOKIES.get('username','')
         if userid:
-            ids_string = request.POST.get('ids')
-            ids_dict = json.loads(ids_string)
-            ids = ids_dict['ids']
-            for id in ids:
-                print id
+            data_string = request.POST.get('values')
+            print data_string
+            data_dict = json.loads(data_string)
+            values = data_dict['values']
+            for val in values:
+                id = val['id']
+                deltaday = val['deltaday']
                 shop = Shops.objects.values('shopname').filter(id=id)[0]
                 if shop:
                     shopname = shop['shopname']
@@ -148,7 +150,7 @@ def shops_syncall(request):
                     shopname = ''
                     print shopname
                 Shops.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
-                sync_shop_products.delay(shopname,userid)
+                sync_shop_products.delay(shopname,deltaday,userid)
             return JsonResponse({'msg':'it works!'})
         else:
             return JsonResponse({"msg":'it fails!'})
@@ -234,9 +236,10 @@ def update_shops(request):
         userid = request.COOKIES.get('username', '')
         if userid:
             shopname = request.POST.get('shopname')
+            deltaday = int(request.POST.get('deltaday'))
             id = request.POST.get('id')
             Shops.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
-            sync_shop_products.delay(shopname,userid)
+            sync_shop_products.delay(shopname,deltaday,userid)
             # update_shop_products(shopname, userid)
             return JsonResponse({'msg': "It works!"})
     else:

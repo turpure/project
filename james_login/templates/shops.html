@@ -9,6 +9,22 @@
 
 
 <script>
+ function DateDiff(sDate1, sDate2) {  //sDate1和sDate2是yyyy-MM-dd格式
+ 
+    var Date1 = new Date(sDate1.replace(/-/g,'/'));
+    var Date2 = new Date(sDate2.replace(/-/g,'/'));
+    var time = Date2.getTime() - Date1.getTime();
+    var iDays = parseInt(time/(1000*60*60*24)) + 1;
+    if(iDays>=30){
+        iDays = 10;
+    }
+    return iDays;  //返回相差天数
+}
+    function Today(){
+    var datetime = new Date();
+    var date = datetime.toLocaleDateString().split('/').join('-');
+    return date;
+}
 function shopFormatter(value) {
     var head = "<a target= '_blank' href='http://www.ebay.com/sch/";
     var tail = "/m.html?_nkw=&_armrs=1&_ipg=&_from=&rt=nc&LH_BIN=1";
@@ -29,7 +45,29 @@ function dateFormatter(value){
         var ids = $.map($table.bootstrapTable('getSelections'), function (row) {
                 return row.id;
             });
-        return ids
+        return ids;
+    };
+</script>
+<script type="text/javascript">
+    function getSlectionValues(){
+        var $table = $('#tab');
+        var values = $.map($table.bootstrapTable('getSelections'), function (row) {
+                var id = row.id;
+                var field_value = row.updatetime;
+                var deltaday;
+                var today = Today();
+                if(field_value){
+                    var updatetime = field_value.substr(0,10);
+                    deltaday = DateDiff(updatetime,today);
+                }
+                else{
+                    deltaday = 10;
+                }
+
+                var value_dict = {'id':row.id, 'deltaday':deltaday};
+                return value_dict;
+            });
+        return values;
     };
 </script>
 <script type="text/javascript">
@@ -98,11 +136,11 @@ function dateFormatter(value){
     })
 
     $("#syncall").click(function(){
-        var ids = getSlectionids();
+        var values = getSlectionValues();
         $.ajax({
             url:'sp_syncall',
             data:{
-                ids:JSON.stringify({'ids':ids}),
+                values:JSON.stringify({'values':values})
                  },
                 type:'post'
             
@@ -253,11 +291,23 @@ function dateFormatter(value){
         operateEvents = {
             'click .sync': function(e,value,row, index) {
                 // console.log(value, row, index);
+                var updatetime; 
+                if(row.updatetime){
+                var today = Today();
+                var deltaday = DateDiff(updatetime,today);
+                console.log(deltaday);
+            }
+            else{
+                var deltaday = 10;
+                 console.log('dada!');
+            }
+
                 $.ajax({
                     url:'update_shops',
                     data:{
                         shopname:row.shopname,
                         id:row.id,
+                        deltaday: deltaday
                     },
                     type:'post',
                     dataType:'text',
@@ -268,7 +318,7 @@ function dateFormatter(value){
                     }
 
                 });
-                 alert("已经加入待更新队里，请稍后查看！");
+                 // alert("已经加入待更新队里，请稍后查看！");
                 // setTimeout(function(){$("[name='refresh']").click()}, 100);
                 $("[name='refresh']").click()
                

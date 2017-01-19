@@ -48,7 +48,7 @@ def find_advanced(page, key_words):
                 start_date = datetime2date(start_time)
                 delta_days = (today-start_date).days
                 # print id, delta_days, start_time
-                if delta_days <= 60:
+                if delta_days <= 30:
                     item_list.append(id)
             obj_list = list(set(item_list))
             # print obj_list

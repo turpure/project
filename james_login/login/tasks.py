@@ -8,8 +8,8 @@ def _do_kground_work(name):
 		time.sleep(1)
 
 @task
-def sync_shop_products(shopname, uid):
-	update_shop_products(shopname, uid)
+def sync_shop_products(shopname,deltaday, uid):
+	update_shop_products(shopname, deltaday,uid)
 
 @task
 def sync_keywords_product(keywords, uid):

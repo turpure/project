@@ -3,7 +3,7 @@ from twisteditem import GetFiledsByItemid
 import datetime
 from multiprocessing import Pool
 from multiprocessing.dummy import Pool as ThreadPool 
-from ebaydate import monthrange
+from ebaydate import monthrange,timerange
 from getlist import GetList
 import MySQLdb
 from functools import partial
@@ -103,10 +103,10 @@ def insert_kw_data(detail, uid, keywords):
         print '%s:%s' % ('insert_kw_data', e)
     con.close()
 
-def get_item_list(shop_name):
+def get_item_list(shop_name, deltaday):
     my_list = GetList()
-    for per in monthrange(1, 2):
-        arg = (shop_name, per[0]+'T15:02:52.000Z', per[1]+'T15:02:52.000Z')
+    for per in timerange(1, deltaday):
+        arg = (shop_name, per[0]+'T01:00:02.768Z', per[1]+'T01:00:02.768Z')
         items = my_list.get_list(arg[0], arg[1], arg[2])
         if items:
             for item in items:
@@ -120,9 +120,9 @@ def handle(id, uid):
         if xml:
             detail = my_item.parse(xml)
             # detail['listduration'] == u'GTC' and
-            if  int(detail['quantitysold']) != 0:
+            # if  int(detail['quantitysold']) != 0:
                 # print detail
-                insert_data(detail, uid)
+            insert_data(detail, uid)
                 # return detail
 
 
@@ -132,15 +132,15 @@ def handle_kw(id, uid, keywords):
     if xml:
         detail = my_item.parse(xml)
         # detail['listduration'] == u'GTC' and
-        if int(detail['quantitysold']) > 0:
+        # if int(detail['quantitysold']) > 0:
             # print detail
-            insert_kw_data(detail, uid, keywords)
+        insert_kw_data(detail, uid, keywords)
 
 
-def update_shop_products(shopname, uid):
+def update_shop_products(shopname,deltaday, uid):
     p = ThreadPool(4)
     try:
-        p.map(partial(handle, uid=uid),  get_item_list(shopname))
+        p.map(partial(handle, uid=uid),  get_item_list(shopname,deltaday))
     except Exception as e:
         print e
     p.close()
