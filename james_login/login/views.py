@@ -7,7 +7,7 @@ import json
 import datetime
 from login.my_db_tools.get_data import get_recom
 # from my_ebay_tools.myshop import update_shop_products, update_keywords_product
-from login.tasks import _do_kground_work, sync_shop_products, sync_keywords_product
+from login.tasks import _do_kground_work, sync_shop_products, sync_keywords_product, add_task
 
 def home(request):
     return render(request, 'home.html')
@@ -235,13 +235,13 @@ def update_shops(request):
     if request.method == "POST":
         userid = request.COOKIES.get('username', '')
         if userid:
-            shopname = request.POST.get('shopname')
+            shopname =str( request.POST.get('shopname'))
             deltaday = int(request.POST.get('deltaday'))
             id = request.POST.get('id')
             Shops.objects.filter(id=id).update(updatetime=str(datetime.datetime.now()))
-            sync_shop_products.delay(shopname,deltaday,userid)
-            # update_shop_products(shopname, userid)
-            return JsonResponse({'msg': "It works!"})
+            res= add_task('sync_shop_products',[shopname,deltaday,userid])
+            # sync_shop_products.delay(shopname,deltaday,userid)
+            return JsonResponse(res)
     else:
         return JsonResponse({'msg': "It fails!"})
 

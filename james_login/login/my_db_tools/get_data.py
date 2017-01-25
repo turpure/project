@@ -39,7 +39,24 @@ def get_recom(uid):
     finally:
         con.close()
 
-
+def get_shops_to_update():
+    con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
+    cur = con.cursor(MySQLdb.cursors.DictCursor)
+    sql = [
+    "select shopname,userid as uid, ",
+    "if(DATEDIFF(now(),IFNULL(updatetime,DATE_ADD(now(),INTERVAL -1 day)))>10,10,DATEDIFF(now(),IFNULL(updatetime,DATE_ADD(now(),INTERVAL -1 day)))) ",
+    "as deltaday",
+    "from login_shops where shopname != ''"
+    ]
+    try:
+        query = ' '.join(sql)
+        cur.execute(query)
+        ret = cur.fetchall()
+        for row in ret:
+            yield row 
+    except:
+        yield None
 
 if __name__ == "__main__":
-    print get_recom('james').next()
+    #print get_recom('james').next()
+    get_shops_to_update()
