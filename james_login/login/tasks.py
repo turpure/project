@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import time
 from celery.task import task
 from login.my_ebay_tools.myshop import update_shop_products, update_keywords_product
-from login.my_db_tools.get_data import get_shops_to_update
+from login.my_db_tools.get_data import get_shops_to_update,get_keywords_to_update
 import json
 import requests
 import MySQLdb
@@ -22,7 +22,7 @@ def sync_keywords_product(keywords, uid):
 	update_keywords_product(keywords, uid)
 
 def add_task(task_name, args):
-    base_url = 'http://192.168.199.136:5555/api/task/apply/login.tasks.%s' % task_name
+    base_url = 'http://127.0.0.1:5555/api/task/apply/login.tasks.%s' % task_name
     data = {
     'args':args
     }
@@ -35,6 +35,12 @@ def auto_update_shops():
     shops = get_shops_to_update()
     for row in shops:
         update_shop_products(row['shopname'],row['deltaday'],row['uid'])
+
+@task
+def auto_update_keywords():
+    keywords = get_keywords_to_update()
+    for row in keywords:
+        update_keywords_product(row['keywords'],row['uid'])
 
 
 
