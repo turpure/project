@@ -5,7 +5,7 @@ from models import User, Shops, Products, KeyWords, KWProducts
 from django.http import HttpResponse, HttpResponseRedirect, Http404,JsonResponse
 import json
 import datetime
-from login.my_db_tools.get_data import get_recom
+from login.my_db_tools.get_data import get_recom, get_newly_products, get_hot_products
 # from my_ebay_tools.myshop import update_shop_products, update_keywords_product
 from login.tasks import _do_kground_work, sync_shop_products, sync_keywords_product, add_task
 
@@ -580,3 +580,44 @@ def remove_liked(request):
         return JsonResponse({'msg': 'it works!'})
     else:
         return JsonResponse({'mgs': 'please post!'})
+
+
+def newlylisted(request):
+    uid = request.COOKIES.get('username','')
+    if uid:
+        return render(request,'newlylisted.html')
+
+
+def newly_products(request):
+    if request.method == "GET":
+        userid = request.COOKIES.get('username','')
+        if userid:
+            products_dict = {'data':[product for product in get_newly_products(userid)]}
+            response = JsonResponse(products_dict)
+            return response
+        else:
+            response = JsonResponse({'data':['no products']})
+            return response
+    else:
+        response = JsonResponse({'data':['plase use method of get!']})
+        return response
+
+def hotsale(request):
+    uid = request.COOKIES.get('username', '')
+    if uid:
+        return render(request,'hotsale.html')
+
+def hot_products(request):
+    if request.method == "GET":
+        userid = request.COOKIES.get('username','')
+        if userid:
+            products_dict = {'data':[product for product in get_hot_products(userid)]}
+            response = JsonResponse(products_dict)
+            return response
+        else:
+            response = JsonResponse({'data':['no products']})
+            return response
+    else:
+        response = JsonResponse({'data':['plase use method of get!']})
+        return response
+

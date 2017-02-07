@@ -14,7 +14,6 @@ def get_recom(uid):
            
             ]
     query = ' '.join(sql)
-    print query
     try:
         cur.execute(query)
         products = cur.fetchall()
@@ -37,6 +36,76 @@ def get_recom(uid):
         print e
     finally:
         con.close()
+
+
+def get_newly_products(uid):
+    con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
+    cur = con.cursor(MySQLdb.cursors.DictCursor)
+    sql = [
+            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'products' as tablename",
+            " from login_products where  datediff(now(),starttime)=1 and status=0 and uid='" + uid +"'",
+            "union",
+           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'kwproducts' as tablename",
+            " from login_kwproducts where  datediff(now(),starttime)=1  and status=0 and uid='" + uid + "'",
+            ]
+    query = ' '.join(sql)
+    try:
+        cur.execute(query)
+        products = cur.fetchall()
+        for row in products:
+            row['starttime'] = str(row['starttime'])[:10]
+            row['galleryurl'] = ' '.join([
+                "<img src='",
+                row['galleryurl'],
+                "' width='100' height='80'>"
+                ])
+            row['title'] = "".join([
+            "<a href='http://www.ebay.com/itm/",
+            row['itemid'],
+            "' target='_Blank'>",
+            row['title'],
+            "</a>"
+            ])
+            yield row
+    except Exception as e:
+        yield None
+    finally:
+        con.close()
+
+def get_hot_products(uid):
+    con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
+    cur = con.cursor(MySQLdb.cursors.DictCursor)
+    sql = [
+            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,deltadays, deltasold,deltahit,'products' as tablename",
+            " from login_products where  deltasold>0 and deltadays>=7 and status=0 and uid='" + uid +"'",
+            "union",
+           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,deltadays, deltasold,deltahit,'kwproducts' as tablename",
+            " from login_kwproducts where deltasold>0 and deltadays>=7  and status=0 and uid='" + uid + "'",
+            ]
+    query = ' '.join(sql)
+    try:
+        cur.execute(query)
+        products = cur.fetchall()
+        for row in products:
+            row['starttime'] = str(row['starttime'])[:10]
+            row['galleryurl'] = ' '.join([
+                "<img src='",
+                row['galleryurl'],
+                "' width='100' height='80'>"
+                ])
+            row['title'] = "".join([
+            "<a href='http://www.ebay.com/itm/",
+            row['itemid'],
+            "' target='_Blank'>",
+            row['title'],
+            "</a>"
+            ])
+            yield row
+    except Exception as e:
+        yield None
+    finally:
+        con.close()
+
 
 def get_shops_to_update():
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
@@ -65,7 +134,7 @@ def get_shops_to_update():
 def get_keywords_to_update():
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
     cur = con.cursor(MySQLdb.cursors.DictCursor)
-    sql = "select id as uid,keywords from login_keywords where IFNULL(keywords,'')!=''"
+    sql = "select userid as uid,keywords from login_keywords where IFNULL(keywords,'')!=''"
     updatetime_sql = "update login_keywords set updatetime=now()"
     try:
         cur.execute(sql)
@@ -81,5 +150,6 @@ def get_keywords_to_update():
 
 if __name__ == "__main__":
     #print get_recom('james').next()
-    for row in get_keywords_to_update():
+    for row in get_hot_products('james'):
         print row
+        

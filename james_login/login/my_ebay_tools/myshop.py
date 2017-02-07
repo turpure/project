@@ -8,7 +8,7 @@ from getlist import GetList
 import MySQLdb
 from functools import partial
 from FindByCategory import get_category_list
-
+from get_data_from_db import  get_items_to_update
 
 def insert_data(detail, uid):
     now = datetime.datetime.now()
@@ -138,26 +138,79 @@ def handle_kw(id, uid, keywords):
 
 
 def update_shop_products(shopname,deltaday, uid):
-    p = ThreadPool(4)
+    p = ThreadPool(8)
     try:
         p.map(partial(handle, uid=uid),  get_item_list(shopname,deltaday))
     except Exception as e:
         print e
-    p.close()
-    p.join()
+    finally:
+        p.close()
+        p.join()
 
 
 def update_keywords_product(keywords, uid):
-    p = ThreadPool(4)
+    p = ThreadPool(8)
     try:
         item_list = get_category_list(keywords)
         # print item_list
         p.map(partial(handle_kw, uid=uid, keywords=keywords), item_list)
     except Exception as e:
         print e
-    p.close()
-    p.join()
+    finally:
+        p.close()
+        p.join()
 
+
+def update_data(delta,flag):
+    con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
+    cur = con.cursor()
+    sql = "update %s set deltasold = %s, deltahit=%s, deltadays=datediff(now(),curdate),curdate=now() where itemid='%s'"   %  (delta['tablename'],delta['deltasold'],delta['deltahit'],delta['itemid'])
+    fail_sql = "update %s set status='10' where itemid='%s'" % (delta['tablename'],delta['itemid'])
+    try:
+        # print sql 
+        if flag:
+            cur.execute(sql)
+        else:
+            cur.execute(fail_sql)
+        print 'updating %s' % delta['itemid']
+        con.commit()
+    except Exception as e:
+        print e
+    finally:
+        con.close()
+
+def update_item(info):
+    itemid = info['itemid']
+    sold = info['quantitysold']
+    hitcount = info['hitcount']
+    tablename = info['tablename']
+    my_item = GetFiledsByItemid()
+    xml = my_item.get_xml(itemid)
+    try:
+        detail = my_item.parse(xml)
+        delta = {}
+        delta['deltasold'] = int(detail['quantitysold']) - sold
+        delta['deltahit'] = int(detail['hitcount']) - int(hitcount)
+        delta['tablename'] = tablename
+        delta['itemid'] = itemid
+        update_data(delta,1)
+    except:
+        delta ={}
+        delta['tablename'] = tablename
+        delta['itemid'] = itemid
+        update_data(delta, 0)
+
+
+def delta_update():
+    infos = get_items_to_update()
+    p = ThreadPool(8)
+    try:
+        p.map(update_item,infos)
+    except Exception as e:
+        print e
+    finally:
+        p.close()
+        p.join()
 
 
 if __name__ =="__main__":
@@ -166,6 +219,7 @@ if __name__ =="__main__":
     # item_list = ['112146443310']
     # detail = map(handle, item_list)
     # print detail
-    update_keywords_product('men shoes', 'test')
+    # update_keywords_product('men shoes', 'test')
+    delta_update()
 
 

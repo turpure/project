@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import time
 from celery.task import task
-from login.my_ebay_tools.myshop import update_shop_products, update_keywords_product
+from login.my_ebay_tools.myshop import update_shop_products, update_keywords_product,delta_update
 from login.my_db_tools.get_data import get_shops_to_update,get_keywords_to_update
 import json
 import requests
@@ -41,6 +41,12 @@ def auto_update_keywords():
     keywords = get_keywords_to_update()
     for row in keywords:
         update_keywords_product(row['keywords'],row['uid'])
+
+@task
+def auot_delta_update():
+    delta_update()
+
+
 
 
 

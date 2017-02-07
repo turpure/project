@@ -62,4 +62,9 @@ urlpatterns = [
     url(r'home/recommendation$',login_views.recommendation,name='recommendation'),
     url(r'home/recom_products$',login_views.recom_products,name='recom_products'),
     url(r'home/operate_recom',login_views.operate_recom,name="operate_recom"),
+    url(r'home/newlylisted',login_views.newlylisted,name="newlylisted"),
+    url(r'home/newly_products',login_views.newly_products,name="newly_products"),
+    url(r'home/hotsale',login_views.hotsale,name="hotsale"),
+    url(r'home/hot_products',login_views.hot_products,name="hot_products"),
+
 ]
