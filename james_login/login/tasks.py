@@ -34,7 +34,7 @@ def add_task(task_name, args):
 def auto_update_shops():
     shops = get_shops_to_update()
     for row in shops:
-        update_shop_products(row['shopname'],row['deltaday'],row['uid'])
+        update_shop_products(row['shopname'],int(row['deltaday']) + 1,row['uid'])
 
 @task
 def auto_update_keywords():
