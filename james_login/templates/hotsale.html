@@ -87,7 +87,7 @@ $.ajaxSetup({
               showMultiSort:'true',
               toolbar:'toolbar',
               clickToSelect:'true',
-               sortPriority: [{"sortName": "starttime", "sortOrder":"desc"},{"sortName": "avgsold", "sortOrder":"desc"}],
+               sortPriority: [{"sortName": "deltadays", "sortOrder":"asc"},{"sortName": "deltasold", "sortOrder":"desc"}],
               pageList: [10, 25, 50, 100, 500, 1000,2000,10000],
              columns:[{
                  field:'state',
@@ -122,7 +122,7 @@ $.ajaxSetup({
                  sortable:'true',
              },{
                  field:'deltadays',
-                 title:'上架天数',
+                 title:'最近N天',
                  sortable:'true',
              },{
                  field:'deltasold',
