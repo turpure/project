@@ -586,6 +586,8 @@ def newlylisted(request):
     uid = request.COOKIES.get('username','')
     if uid:
         return render(request,'newlylisted.html')
+    else:
+        return redirect("login")
 
 
 def newly_products(request):
@@ -606,6 +608,8 @@ def hotsale(request):
     uid = request.COOKIES.get('username', '')
     if uid:
         return render(request,'hotsale.html')
+    else:
+        return redirect("login")
 
 def hot_products(request):
     if request.method == "GET":
