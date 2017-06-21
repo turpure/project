@@ -6,11 +6,11 @@ def get_recom(uid):
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
     cur = con.cursor(MySQLdb.cursors.DictCursor)
     sql = [
-            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'products' as tablename",
-            " from login_products where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid +"'",
+            "select max((currentprice + shippingcost)) as currentprice ,max(title) as title,max(starttime) as starttime,max(galleryurl) as galleryurl ,max(id) as id,max(currency) as currency,max(itemid) as itemid ,max(datediff(curdate,starttime)) as deltaday, max((quantitysold+0)/datediff(now(),starttime))  as avgsold,'products' as tablename",
+            " from login_products where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid +"' group by itemid",
             "union",
-           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'kwproducts' as tablename",
-            " from login_kwproducts where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid + "'",
+           "select max((currentprice + shippingcost)) as currentprice ,max(title) as title,max(starttime) as starttime,max(galleryurl) as galleryurl ,max(id) as id,max(currency) as currency,max(itemid) as itemid ,max(datediff(curdate,starttime)) as deltaday, max((quantitysold+0)/datediff(now(),starttime))  as avgsold,'products' as tablename",
+            " from login_kwproducts where (quantitysold+0)/datediff(now(),starttime)>=0.5 and status=0 and uid='" + uid + "' group by itemid",
            
             ]
     query = ' '.join(sql)
@@ -42,11 +42,11 @@ def get_newly_products(uid):
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
     cur = con.cursor(MySQLdb.cursors.DictCursor)
     sql = [
-            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'products' as tablename",
-            " from login_products where  datediff(now(),starttime)=1 and status=0 and uid='" + uid +"'",
+            "select  max((currentprice + shippingcost)) as currentprice ,max(title) as title,max(starttime) as starttime,max(galleryurl) as galleryurl ,max(id) as id,max(currency) as currency ,max(itemid) as itemid , max(datediff(curdate,starttime)) as deltaday, max((quantitysold+0)/datediff(now(),starttime))  as avgsold,'products' as tablename",
+            " from login_products where  datediff(now(),starttime)=1 and status=0 and uid='" + uid +"'group by itemid" ,
             "union",
-           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,datediff(curdate,starttime) as deltaday, (quantitysold+0)/datediff(now(),starttime)  as avgsold,'kwproducts' as tablename",
-            " from login_kwproducts where  datediff(now(),starttime)=1  and status=0 and uid='" + uid + "'",
+           "select  max((currentprice + shippingcost)) as currentprice ,max(title) as title,max(starttime) as starttime,max(galleryurl) as galleryurl ,max(id) as id,max(currency) as currency ,max(itemid) as itemid , max(datediff(curdate,starttime)) as deltaday, max((quantitysold+0)/datediff(now(),starttime))  as avgsold,'products' as tablename",
+            " from login_kwproducts where  datediff(now(),starttime)=1  and status=0 and uid='" + uid + "'group by itemid",
             ]
     query = ' '.join(sql)
     try:
@@ -76,11 +76,11 @@ def get_hot_products(uid):
     con = MySQLdb.connect(host='127.0.0.1', user='root', passwd='urnothing', db='django_user')
     cur = con.cursor(MySQLdb.cursors.DictCursor)
     sql = [
-            "select (currentprice + shippingcost) as currentprice ,title,starttime,galleryurl,id,currency,itemid,deltadays, deltasold,deltahit,'products' as tablename",
-            " from login_products where  deltasold>0 and deltadays>=7 and status=0 and uid='" + uid +"'",
+            "select max((currentprice + shippingcost)) as currentprice ,max(title) as title, max(starttime) as starttime,max(galleryurl) as galleryurl,max(id) as id,max(currency) as currency,max(itemid) as itemid,max(deltadays) as deltadays, max(deltasold) as deltasold ,max(deltahit) as deltahit ,'products' as tablename",
+            " from login_products where  deltasold>0 and deltadays>=7 and status=0 and uid='" + uid +"' group by itemid",
             "union",
-           "select (currentprice+shippingcost) as currentprice,title,starttime,galleryurl,id,currency,itemid,deltadays, deltasold,deltahit,'kwproducts' as tablename",
-            " from login_kwproducts where deltasold>0 and deltadays>=7  and status=0 and uid='" + uid + "'",
+           "select max((currentprice + shippingcost)) as currentprice ,max(title) as title, max(starttime) as starttime,max(galleryurl) as galleryurl,max(id) as id,max(currency) as currency,max(itemid) as itemid,max(deltadays) as deltadays, max(deltasold) as deltasold ,max(deltahit) as deltahit ,'products' as tablename",
+            " from login_kwproducts where deltasold>0 and deltadays>=7  and status=0 and uid='" + uid + "' group by itemid",
             ]
     query = ' '.join(sql)
     try:

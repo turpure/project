@@ -1,5 +1,5 @@
-__author__ = 'james'
 from time import strftime, localtime
+__author__ = 'james'
 from datetime import timedelta, date
 import calendar
 year = strftime("%Y",localtime())
